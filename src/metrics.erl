@@ -71,7 +71,9 @@ decrement_counter(#metrics_ng{mod=Mod}, Name, Value) ->
     Mod:decrement_counter(Name, Value).
 
 
-%% @doc update an histogram with a value or a function returning a value
+%% @doc update an histogram with a value or the duration of a function. When
+%% passing a function the result will be returned once the metric have been
+%% updated with the duration.
 -spec update_histogram(metrics_engine(), any(), number()) ->  ok | {error, term()};
                       (metrics_engine(), any(), function()) ->  ok | {error, term()}.
 update_histogram(#metrics_ng{mod=Mod}, Name, ValueOrFun) ->

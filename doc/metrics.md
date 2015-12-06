@@ -34,7 +34,7 @@ metrics_engine() = #metrics_ng{}
 ## Function Index ##
 
 
-<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#decrement_counter-2">decrement_counter/2</a></td><td>decrement a counter with 1.</td></tr><tr><td valign="top"><a href="#decrement_counter-3">decrement_counter/3</a></td><td>decrement a counter with value.</td></tr><tr><td valign="top"><a href="#delete-2">delete/2</a></td><td>delete a metric.</td></tr><tr><td valign="top"><a href="#increment_counter-2">increment_counter/2</a></td><td>increment a counter with 1.</td></tr><tr><td valign="top"><a href="#increment_counter-3">increment_counter/3</a></td><td>increment a counter with Value.</td></tr><tr><td valign="top"><a href="#init-1">init/1</a></td><td>set the module to use for metrics.</td></tr><tr><td valign="top"><a href="#new-3">new/3</a></td><td>create a new metric.</td></tr><tr><td valign="top"><a href="#update_gauge-3">update_gauge/3</a></td><td>update a gauge with a value.</td></tr><tr><td valign="top"><a href="#update_histogram-3">update_histogram/3</a></td><td>update an histogram with a value or a function returning a value.</td></tr><tr><td valign="top"><a href="#update_meter-3">update_meter/3</a></td><td>update a meter with a valyue.</td></tr></table>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#decrement_counter-2">decrement_counter/2</a></td><td>decrement a counter with 1.</td></tr><tr><td valign="top"><a href="#decrement_counter-3">decrement_counter/3</a></td><td>decrement a counter with value.</td></tr><tr><td valign="top"><a href="#delete-2">delete/2</a></td><td>delete a metric.</td></tr><tr><td valign="top"><a href="#increment_counter-2">increment_counter/2</a></td><td>increment a counter with 1.</td></tr><tr><td valign="top"><a href="#increment_counter-3">increment_counter/3</a></td><td>increment a counter with Value.</td></tr><tr><td valign="top"><a href="#init-1">init/1</a></td><td>set the module to use for metrics.</td></tr><tr><td valign="top"><a href="#new-3">new/3</a></td><td>create a new metric.</td></tr><tr><td valign="top"><a href="#update_gauge-3">update_gauge/3</a></td><td>update a gauge with a value.</td></tr><tr><td valign="top"><a href="#update_histogram-3">update_histogram/3</a></td><td>update an histogram with a value or the duration of a function.</td></tr><tr><td valign="top"><a href="#update_meter-3">update_meter/3</a></td><td>update a meter with a valyue.</td></tr></table>
 
 
 <a name="functions"></a>
@@ -139,7 +139,9 @@ update_histogram(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a>
 </code></pre>
 <br />
 
-update an histogram with a value or a function returning a value
+update an histogram with a value or the duration of a function. When
+passing a function the result will be returned once the metric have been
+updated with the duration.
 
 <a name="update_meter-3"></a>
 

@@ -1,0 +1,15 @@
+{application, 'metrics',
+ [{description, "A generic interface to different metrics systems in Erlang."},
+  {vsn, "0.1.0"},
+  {registered, []},
+  {applications,
+   [kernel,
+    stdlib
+   ]},
+  {env,[]},
+  {modules, []},
+
+  {maintainers, ["Benoit Chesneau"]},
+  {licenses, ["BSD"]},
+  {links, [{"Github", "https://github.com/benoitc/erlang-metrics"}]}
+ ]}.

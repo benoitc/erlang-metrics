@@ -12,6 +12,9 @@ application have been extracted from
 
 Currently support [Folsom](https://github.com/folsom-project/folsom) and [Exometer](https://github.com/Feuerlabs/exometer)
 
+
+[![Hex pm](http://img.shields.io/hexpm/v/metrics.svg?style=flat)](https://hex.pm/packages/metrics)
+
 Example:
 --------
 

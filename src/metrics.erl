@@ -34,6 +34,13 @@
 
 %% @doc set the module to use for metrics.
 %% Types are: counter, histograme, gauge, meter
+%%
+%% modules supported are:
+%% <ul>
+%% <li>`metrics_folsom': to interface folsom</li>
+%% <li>`metrics_exometer': to interface to exometer</li>
+%% <li>`metrics_dummy': a dummy module to use by default.</li>
+%% </ul>
 -spec init(Mod :: atom()) -> metrics_engine().
 init(Mod) ->
     %% check the module

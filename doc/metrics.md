@@ -108,6 +108,15 @@ init(Mod::atom()) -&gt; <a href="#type-metrics_engine">metrics_engine()</a>
 set the module to use for metrics.
 Types are: counter, histograme, gauge, meter
 
+modules supported are:
+
+* `metrics_folsom`: to interface folsom
+
+* `metrics_exometer`: to interface to exometer
+
+* `metrics_dummy`: a dummy module to use by default.
+
+
 <a name="new-3"></a>
 
 ### new/3 ###

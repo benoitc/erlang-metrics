@@ -36,6 +36,14 @@
 %% Types are: counter, histograme, gauge, meter
 -spec init(Mod :: atom()) -> metrics_engine().
 init(Mod) ->
+    %% check the module
+    _ = code:ensure_loaded(Mod),
+    case erlang:function_exported(Mod, new, 2) of
+        false ->
+            error(badarg);
+        true ->
+            ok
+    end,
     #metrics_ng{mod=Mod}.
 
 

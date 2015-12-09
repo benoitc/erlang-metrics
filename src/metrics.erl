@@ -68,7 +68,7 @@ delete(#metrics_ng{mod=Mod}, Name) ->
 %% @doc increment a counter with 1
 -spec increment_counter(metrics_engine(), any()) -> ok | {error, term()}.
 increment_counter(#metrics_ng{mod=Mod}, Name) ->
-    Mod:incremenet_counter(Name).
+    Mod:increment_counter(Name).
 
 %% @doc increment a counter with Value
 -spec increment_counter(metrics_engine(), any(), pos_integer()) ->  ok | {error, term()}.

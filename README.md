@@ -43,3 +43,14 @@ Full doc is available in the [`metrics`](http://github.com/benoitc/erlang-metric
 $ rebar3 compile
 ```
 
+
+
+## Modules ##
+
+
+<table width="100%" border="0" summary="list of modules">
+<tr><td><a href="http://github.com/benoitc/erlang-metrics/blob/master/doc/metrics.md" class="module">metrics</a></td></tr>
+<tr><td><a href="http://github.com/benoitc/erlang-metrics/blob/master/doc/metrics_dummy.md" class="module">metrics_dummy</a></td></tr>
+<tr><td><a href="http://github.com/benoitc/erlang-metrics/blob/master/doc/metrics_exometer.md" class="module">metrics_exometer</a></td></tr>
+<tr><td><a href="http://github.com/benoitc/erlang-metrics/blob/master/doc/metrics_folsom.md" class="module">metrics_folsom</a></td></tr></table>
+

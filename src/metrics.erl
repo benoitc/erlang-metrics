@@ -23,7 +23,7 @@
 -record(metrics_ng, {mod}).
 
 -type metrics_engine() :: #metrics_ng{}.
--type metric() :: counter | histogram | gauge | meter.
+-type metric() :: counter | histogram | gauge | meter.
 
 -export_types([metrics_engine/0,
                metric/0]).
@@ -55,7 +55,7 @@ init(Mod) ->
 
 
 %% @doc create a new metric
--spec new(metrics_engine(), metric(), any()) -> ok | {error, term()}.
+-spec new(metrics_engine(), metric(), any()) -> ok | {error, term()}.
 new(#metrics_ng{mod=Mod}, Type, Name) ->
     Mod:new(Type, Name).
 
@@ -89,8 +89,9 @@ decrement_counter(#metrics_ng{mod=Mod}, Name, Value) ->
 %% @doc update an histogram with a value or the duration of a function. When
 %% passing a function the result will be returned once the metric have been
 %% updated with the duration.
--spec update_histogram(metrics_engine(), any(), number()) ->  ok | {error, term()};
-                      (metrics_engine(), any(), function()) ->  ok | {error, term()}.
+-spec update_histogram
+        (metrics_engine(), any(), number()) ->  ok | {error, term()};
+        (metrics_engine(), any(), function()) ->  ok | {error, term()}.
 update_histogram(#metrics_ng{mod=Mod}, Name, ValueOrFun) ->
     Mod:update_histogram(Name, ValueOrFun).
 

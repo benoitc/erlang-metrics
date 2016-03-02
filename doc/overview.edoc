@@ -1,5 +1,5 @@
-@copyright 2015 Benoît Chesneau.
-@version 0.2.1
+@copyright 2016 Benoît Chesneau.
+@version 1.0.0
 @title: metrics: A generic interface to different metrics systems in Erlang.
 
 @doc

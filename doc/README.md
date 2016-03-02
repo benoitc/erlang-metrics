@@ -2,9 +2,9 @@
 
 # metrics: A generic interface to different metrics systems in Erlang. #
 
-Copyright (c) 2015 Benoît Chesneau.
+Copyright (c) 2016 Benoît Chesneau.
 
-__Version:__ 0.2.1
+__Version:__ 1.0.0
 
 # metrics
 

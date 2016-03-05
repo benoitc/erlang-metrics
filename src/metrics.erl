@@ -17,13 +17,17 @@
     decrement_counter/3,
     update_histogram/3,
     update_gauge/3,
-    update_meter/3]).
+    update_meter/3,
+    increment_spiral/2,
+    increment_spiral/3,
+    decrement_spiral/2,
+    decrement_spiral/3]).
 
 
 -record(metrics_ng, {mod}).
 
 -type metrics_engine() :: #metrics_ng{}.
--type metric() :: counter | histogram | gauge | meter.
+-type metric() :: counter | histogram | gauge | meter | spiral.
 
 -export_types([metrics_engine/0,
                metric/0]).
@@ -104,3 +108,23 @@ update_gauge(#metrics_ng{mod=Mod}, Name, Value) ->
 -spec update_meter(metrics_engine(), any(), number()) ->  ok | {error, term()}.
 update_meter(#metrics_ng{mod=Mod}, Name, Value) ->
     Mod:update_meter(Name, Value).
+
+%% @doc increment a spiral with 1
+-spec increment_spiral(metrics_engine(), any()) -> ok | {error, term()}.
+increment_spiral(#metrics_ng{mod=Mod}, Name) ->
+    Mod:increment_spiral(Name).
+
+%% @doc increment a spiral with Value
+-spec increment_spiral(metrics_engine(), any(), pos_integer()) ->  ok | {error, term()}.
+increment_spiral(#metrics_ng{mod=Mod}, Name, Value) ->
+    Mod:increment_spiral(Name, Value).
+
+%% @doc decrement a spiral with 1
+-spec decrement_spiral(metrics_engine(), any()) ->  ok | {error, term()}.
+decrement_spiral(#metrics_ng{mod=Mod}, Name) ->
+    Mod:decrement_spiral(Name).
+
+%% @doc decrement a spiral with value
+-spec decrement_spiral(metrics_engine(), any(), pos_integer()) ->  ok | {error, term()}.
+decrement_spiral(#metrics_ng{mod=Mod}, Name, Value) ->
+    Mod:decrement_spiral(Name, Value).

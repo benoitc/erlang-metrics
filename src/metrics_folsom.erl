@@ -17,7 +17,11 @@
     decrement_counter/2,
     update_histogram/2,
     update_gauge/2,
-    update_meter/2]).
+    update_meter/2,
+    increment_spiral/1,
+    increment_spiral/2,
+    decrement_spiral/1,
+    decrement_spiral/2]).
 
 -spec new(atom(), any()) -> ok | {error, term()}.
 new(counter, Name) ->
@@ -28,6 +32,8 @@ new(gauge, Name) ->
     folsom_metrics:new_gauge(Name);
 new(meter, Name) ->
     folsom_metrics:new_meter(Name);
+new(spiral, Name) ->
+    folsom_metrics:new_spiral(Name);
 new(_, _) ->
     {error, unsupported_type}.
 
@@ -71,6 +77,21 @@ update_gauge(Name, Value) ->
 update_meter(Name, Value) ->
     notify(Name, Value, meter).
 
+-spec increment_spiral(any()) -> ok | {error, term()}.
+increment_spiral(Name) ->
+    notify(Name, 1, spiral).
+
+-spec increment_spiral(any(), pos_integer()) ->  ok | {error, term()}.
+increment_spiral(Name, Value) ->
+    notify(Name, Value, spiral).
+
+-spec decrement_spiral(any()) ->  ok | {error, term()}.
+decrement_spiral(Name) ->
+    notify(Name, 1, spiral).
+
+-spec decrement_spiral(any(), pos_integer()) ->  ok | {error, term()}.
+decrement_spiral(Name, Value) ->
+    notify(Name, Value, spiral).
 
 
 -spec notify(any(), any(), atom()) ->  ok | {error, term()}.

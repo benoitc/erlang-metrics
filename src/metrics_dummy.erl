@@ -17,7 +17,11 @@
     decrement_counter/2,
     update_histogram/2,
     update_gauge/2,
-    update_meter/2]).
+    update_meter/2,
+    increment_spiral/1,
+    increment_spiral/2,
+    decrement_spiral/1,
+    decrement_spiral/2]).
 
 
 new(_, _) ->
@@ -47,4 +51,16 @@ update_gauge(_, _) ->
     ok.
 
 update_meter(_, _) ->
+    ok.
+
+increment_spiral(_) ->
+    ok.
+
+increment_spiral(_, _) ->
+    ok.
+
+decrement_spiral(_) ->
+    ok.
+
+decrement_spiral(_, _) ->
     ok.

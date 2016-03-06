@@ -16,7 +16,7 @@
 
 
 <pre><code>
-metric() = counter | histogram | gauge | meter
+metric() = counter | histogram | gauge | meter | spiral
 </code></pre>
 
 
@@ -34,7 +34,7 @@ metrics_engine() = #metrics_ng{}
 ## Function Index ##
 
 
-<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#decrement_counter-2">decrement_counter/2</a></td><td>decrement a counter with 1.</td></tr><tr><td valign="top"><a href="#decrement_counter-3">decrement_counter/3</a></td><td>decrement a counter with value.</td></tr><tr><td valign="top"><a href="#delete-2">delete/2</a></td><td>delete a metric.</td></tr><tr><td valign="top"><a href="#increment_counter-2">increment_counter/2</a></td><td>increment a counter with 1.</td></tr><tr><td valign="top"><a href="#increment_counter-3">increment_counter/3</a></td><td>increment a counter with Value.</td></tr><tr><td valign="top"><a href="#init-1">init/1</a></td><td>set the module to use for metrics.</td></tr><tr><td valign="top"><a href="#new-3">new/3</a></td><td>create a new metric.</td></tr><tr><td valign="top"><a href="#update_gauge-3">update_gauge/3</a></td><td>update a gauge with a value.</td></tr><tr><td valign="top"><a href="#update_histogram-3">update_histogram/3</a></td><td>update an histogram with a value or the duration of a function.</td></tr><tr><td valign="top"><a href="#update_meter-3">update_meter/3</a></td><td>update a meter with a valyue.</td></tr></table>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#decrement_counter-2">decrement_counter/2</a></td><td>decrement a counter with 1.</td></tr><tr><td valign="top"><a href="#decrement_counter-3">decrement_counter/3</a></td><td>decrement a counter with value.</td></tr><tr><td valign="top"><a href="#decrement_spiral-2">decrement_spiral/2</a></td><td>decrement a spiral with 1.</td></tr><tr><td valign="top"><a href="#decrement_spiral-3">decrement_spiral/3</a></td><td>decrement a spiral with value.</td></tr><tr><td valign="top"><a href="#delete-2">delete/2</a></td><td>delete a metric.</td></tr><tr><td valign="top"><a href="#increment_counter-2">increment_counter/2</a></td><td>increment a counter with 1.</td></tr><tr><td valign="top"><a href="#increment_counter-3">increment_counter/3</a></td><td>increment a counter with Value.</td></tr><tr><td valign="top"><a href="#increment_spiral-2">increment_spiral/2</a></td><td>increment a spiral with 1.</td></tr><tr><td valign="top"><a href="#increment_spiral-3">increment_spiral/3</a></td><td>increment a spiral with Value.</td></tr><tr><td valign="top"><a href="#init-1">init/1</a></td><td>set the module to use for metrics.</td></tr><tr><td valign="top"><a href="#new-3">new/3</a></td><td>create a new metric.</td></tr><tr><td valign="top"><a href="#update_gauge-3">update_gauge/3</a></td><td>update a gauge with a value.</td></tr><tr><td valign="top"><a href="#update_histogram-3">update_histogram/3</a></td><td>update an histogram with a value or the duration of a function.</td></tr><tr><td valign="top"><a href="#update_meter-3">update_meter/3</a></td><td>update a meter with a valyue.</td></tr></table>
 
 
 <a name="functions"></a>
@@ -62,6 +62,28 @@ decrement_counter(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a
 <br />
 
 decrement a counter with value
+
+<a name="decrement_spiral-2"></a>
+
+### decrement_spiral/2 ###
+
+<pre><code>
+decrement_spiral(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a>, Name::any()) -&gt; ok | {error, term()}
+</code></pre>
+<br />
+
+decrement a spiral with 1
+
+<a name="decrement_spiral-3"></a>
+
+### decrement_spiral/3 ###
+
+<pre><code>
+decrement_spiral(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a>, Name::any(), Value::pos_integer()) -&gt; ok | {error, term()}
+</code></pre>
+<br />
+
+decrement a spiral with value
 
 <a name="delete-2"></a>
 
@@ -95,6 +117,28 @@ increment_counter(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a
 <br />
 
 increment a counter with Value
+
+<a name="increment_spiral-2"></a>
+
+### increment_spiral/2 ###
+
+<pre><code>
+increment_spiral(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a>, Name::any()) -&gt; ok | {error, term()}
+</code></pre>
+<br />
+
+increment a spiral with 1
+
+<a name="increment_spiral-3"></a>
+
+### increment_spiral/3 ###
+
+<pre><code>
+increment_spiral(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a>, Name::any(), Value::pos_integer()) -&gt; ok | {error, term()}
+</code></pre>
+<br />
+
+increment a spiral with Value
 
 <a name="init-1"></a>
 

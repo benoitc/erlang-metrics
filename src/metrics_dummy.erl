@@ -11,6 +11,8 @@
 -export([
     new/2,
     delete/1,
+    sample/1,
+    get_value/1,
     increment_counter/1,
     increment_counter/2,
     decrement_counter/1,
@@ -30,6 +32,12 @@ new(_, _) ->
 delete(_) ->
     ok.
 
+sample(_) ->
+    {error, unsuported}.
+
+get_value(_) ->
+    {error, unsuported}.
+    
 increment_counter(_) ->
     ok.
 

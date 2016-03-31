@@ -34,7 +34,7 @@ metrics_engine() = #metrics_ng{}
 ## Function Index ##
 
 
-<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#decrement_counter-2">decrement_counter/2</a></td><td>decrement a counter with 1.</td></tr><tr><td valign="top"><a href="#decrement_counter-3">decrement_counter/3</a></td><td>decrement a counter with value.</td></tr><tr><td valign="top"><a href="#decrement_spiral-2">decrement_spiral/2</a></td><td>decrement a spiral with 1.</td></tr><tr><td valign="top"><a href="#decrement_spiral-3">decrement_spiral/3</a></td><td>decrement a spiral with value.</td></tr><tr><td valign="top"><a href="#delete-2">delete/2</a></td><td>delete a metric.</td></tr><tr><td valign="top"><a href="#increment_counter-2">increment_counter/2</a></td><td>increment a counter with 1.</td></tr><tr><td valign="top"><a href="#increment_counter-3">increment_counter/3</a></td><td>increment a counter with Value.</td></tr><tr><td valign="top"><a href="#increment_spiral-2">increment_spiral/2</a></td><td>increment a spiral with 1.</td></tr><tr><td valign="top"><a href="#increment_spiral-3">increment_spiral/3</a></td><td>increment a spiral with Value.</td></tr><tr><td valign="top"><a href="#init-1">init/1</a></td><td>set the module to use for metrics.</td></tr><tr><td valign="top"><a href="#new-3">new/3</a></td><td>create a new metric.</td></tr><tr><td valign="top"><a href="#update_gauge-3">update_gauge/3</a></td><td>update a gauge with a value.</td></tr><tr><td valign="top"><a href="#update_histogram-3">update_histogram/3</a></td><td>update an histogram with a value or the duration of a function.</td></tr><tr><td valign="top"><a href="#update_meter-3">update_meter/3</a></td><td>update a meter with a valyue.</td></tr></table>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#decrement_counter-2">decrement_counter/2</a></td><td>decrement a counter with 1.</td></tr><tr><td valign="top"><a href="#decrement_counter-3">decrement_counter/3</a></td><td>decrement a counter with value.</td></tr><tr><td valign="top"><a href="#decrement_spiral-2">decrement_spiral/2</a></td><td>decrement a spiral with 1.</td></tr><tr><td valign="top"><a href="#decrement_spiral-3">decrement_spiral/3</a></td><td>decrement a spiral with value.</td></tr><tr><td valign="top"><a href="#delete-2">delete/2</a></td><td>delete a metric.</td></tr><tr><td valign="top"><a href="#get_value-2">get_value/2</a></td><td>Fetch the current value of the metric.</td></tr><tr><td valign="top"><a href="#increment_counter-2">increment_counter/2</a></td><td>increment a counter with 1.</td></tr><tr><td valign="top"><a href="#increment_counter-3">increment_counter/3</a></td><td>increment a counter with Value.</td></tr><tr><td valign="top"><a href="#increment_spiral-2">increment_spiral/2</a></td><td>increment a spiral with 1.</td></tr><tr><td valign="top"><a href="#increment_spiral-3">increment_spiral/3</a></td><td>increment a spiral with Value.</td></tr><tr><td valign="top"><a href="#init-1">init/1</a></td><td>set the module to use for metrics.</td></tr><tr><td valign="top"><a href="#new-3">new/3</a></td><td>create a new metric.</td></tr><tr><td valign="top"><a href="#sample-2">sample/2</a></td><td>Tells the metric to take a sample.</td></tr><tr><td valign="top"><a href="#update_gauge-3">update_gauge/3</a></td><td>update a gauge with a value.</td></tr><tr><td valign="top"><a href="#update_histogram-3">update_histogram/3</a></td><td>update an histogram with a value or the duration of a function.</td></tr><tr><td valign="top"><a href="#update_meter-3">update_meter/3</a></td><td>update a meter with a valyue.</td></tr></table>
 
 
 <a name="functions"></a>
@@ -95,6 +95,17 @@ delete(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a>, Name::an
 <br />
 
 delete a metric
+
+<a name="get_value-2"></a>
+
+### get_value/2 ###
+
+<pre><code>
+get_value(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a>, Name::any()) -&gt; term() | {error, term()}
+</code></pre>
+<br />
+
+Fetch the current value of the metric.
 
 <a name="increment_counter-2"></a>
 
@@ -171,6 +182,17 @@ new(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a>, Type::<a hr
 <br />
 
 create a new metric
+
+<a name="sample-2"></a>
+
+### sample/2 ###
+
+<pre><code>
+sample(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a>, Name::any()) -&gt; ok | unsupported | list() | {error, term()}
+</code></pre>
+<br />
+
+Tells the metric to take a sample.
 
 <a name="update_gauge-3"></a>
 

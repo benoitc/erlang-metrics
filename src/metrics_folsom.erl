@@ -11,6 +11,8 @@
 -export([
     new/2,
     delete/1,
+    sample/1,
+    get_value/1,
     increment_counter/1,
     increment_counter/2,
     decrement_counter/1,
@@ -39,6 +41,54 @@ new(_, _) ->
 
 delete(Name) ->
     folsom_metrics:delete_metric(Name).
+
+
+sample(Name) ->
+    case folsom_metrics:get_metric_info(Name) of
+        [{Name, Info}] ->
+            Type = proplists:get_value(type, Info),
+            case Type of
+                histogram ->
+                    Vals = folsom_metrics:get_histogram_statistics(Name),
+                    try [filter_dp(D, Vals) || D <- datapoints(Type)]
+                    catch
+                        error:_Error ->
+                            unavailable
+                    end;
+                counter ->
+                    ok;
+                _ ->
+                    {error, unsuported}
+            end;
+        [] ->
+            {error, not_found}
+    end.
+
+get_value(Name) ->
+    case folsom_metrics:get_metric_info(Name) of
+        [{Name, Info}] ->
+            Type = proplists:get_value(type, Info),
+            Vals = get_value_(Name, Type),
+            try [filter_dp(D, Vals) || D <- datapoints(Type)]
+            catch
+                error:_Error ->
+                    unavailable
+            end;
+        [] ->
+            {error, not_found}
+    end.
+
+
+get_value_(Name, counter) ->
+    [{value, folsom_metrics_counter:get_value(Name)}];
+get_value_(Name, gauge) ->
+    [{value, folsom_metrics_gauge:get_value(Name)}];
+get_value_(Name, histogram) ->
+    folsom_metrics:get_histogram_statistics(Name);
+get_value_(Name, meter) ->
+    folsom_metrics:get_metric_value(Name);
+get_value_(Name, spiral) ->
+    folsom_metrics_spiral:get_values(Name).
 
 -spec increment_counter(any()) -> ok | {error, term()}.
 increment_counter(Name) ->
@@ -107,4 +157,55 @@ notify(Name, Op, Type) ->
             io:format("error is ~p~n", [Error]),
 
             Error
+    end.
+
+%% @private
+%% identical format to exometer
+
+datapoints(counter) ->
+    [value];
+datapoints(gauge) ->
+    [value];
+datapoints(histogram) ->
+    stats_datapoints();
+datapoints(duration) ->
+    [count, last |stats_datapoints()];
+datapoints(spiral) ->
+    [one, count];
+datapoints(meter) ->
+    [count,one,five,fifteen,day,mean,acceleration];
+datapoints(history) ->
+    [events, info].
+
+stats_datapoints() ->
+    [n,mean,min,max,median,50,75,90,95,99,999].
+
+filter_dp(Mean, DPs) when Mean==mean; Mean==arithmetic_mean ->
+    case lists:keyfind(mean, 1, DPs) of
+        false ->
+            case lists:keyfind(arithmetic_mean, 1, DPs) of
+                false -> {mean, 0};
+                {_,V} -> {mean, maybe_trunc(V)}
+            end;
+        {_,V} -> {mean, maybe_trunc(V)}
+    end;
+filter_dp(H, DPs) when is_integer(H) ->
+    case lists:keyfind(H, 1, DPs) of
+        false ->
+            case lists:keyfind(percentile, 1, DPs) of
+                false -> {H, 0};
+                {_, Ps} -> get_dp(H, Ps)
+            end;
+        {_,V} -> {H, maybe_trunc(V)}
+    end;
+filter_dp(H, DPs) ->
+    get_dp(H, DPs).
+
+maybe_trunc(V) when is_float(V) -> trunc(V);
+maybe_trunc(V) -> V.
+
+get_dp(K, DPs) ->
+    case lists:keyfind(K, 1, DPs) of
+        false -> {K, 0};
+        {_, V} -> {K, maybe_trunc(V)}
     end.

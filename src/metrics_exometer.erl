@@ -10,6 +10,8 @@
 -export([
     new/2,
     delete/1,
+    sample/1,
+    get_value/1,
     increment_counter/1,
     increment_counter/2,
     decrement_counter/1,
@@ -39,6 +41,12 @@ new(_, _) ->
 delete(Name) ->
     exometer:delete(Name).
 
+sample(Name) ->
+    exometer:sample(Name).
+
+get_value(Name) ->
+    exometer:get_value(Name).
+    
 -spec increment_counter(any()) -> ok | {error, term()}.
 increment_counter(Name) ->
     notify(Name, 1, counter).

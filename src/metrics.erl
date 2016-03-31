@@ -11,6 +11,8 @@
 -export([
     new/3,
     delete/2,
+    sample/2,
+    get_value/2,
     increment_counter/2,
     increment_counter/3,
     decrement_counter/2,
@@ -67,6 +69,17 @@ new(#metrics_ng{mod=Mod}, Type, Name) ->
 -spec delete(metrics_engine(), any()) -> ok.
 delete(#metrics_ng{mod=Mod}, Name) ->
     Mod:delete(Name).
+
+
+%% @doc Tells the metric to take a sample.
+-spec sample(metrics_engine(), any()) -> ok | unsupported | list() | {error, term()}.
+sample(#metrics_ng{mod=Mod} , Name) ->
+    Mod:sample(Name).
+
+%% @doc Fetch the current value of the metric.
+-spec get_value(metrics_engine(), any()) ->  term() | {error, term()}.
+get_value(#metrics_ng{mod=Mod} , Name) ->
+    Mod:get_value(Name).
 
 
 %% @doc increment a counter with 1

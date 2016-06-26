@@ -1,3 +1,4 @@
 %% encoding: UTF-8
 {application,metrics}.
-{modules,[metrics,metrics_dummy,metrics_exometer,metrics_folsom]}.
+{modules,[metrics,metrics_exometer,metrics_folsom,metrics_grapherl,
+          metrics_noop,metrics_process_tracker,metrics_sup]}.

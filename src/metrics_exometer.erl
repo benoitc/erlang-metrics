@@ -2,7 +2,8 @@
 %%
 %% This file is part of barrel_metrics released under the BSD license.
 %% See the NOTICE for more information.
-
+%%
+%% @doc exometer backend
 
 %% Created by benoitc on 26/06/16.
 

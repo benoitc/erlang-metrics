@@ -1,3 +1,10 @@
+%% Copyright (c) 2016, Benoit Chesneau.
+%%
+%% This file is part of barrel_metrics released under the BSD license.
+%% See the NOTICE for more information.
+%%
+%% @doc noop backend
+
 
 %% Created by benoitc on 26/06/16.
 

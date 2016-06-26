@@ -1,6 +1,16 @@
+%% Copyright (c) 2016, Benoit Chesneau.
+%%
+%% This file is part of barrel_metrics released under the BSD license.
+%% See the NOTICE for more information.
 
 
 %% @doc metrics handler is https://github.com/processone/grapherl
+%%
+%% This backend can be set via the barrel_metrics env:
+%%
+%% - port: 11111 by default, the port to connect
+%% - peer: 127.0.0.1 by default, the address to connect
+%% - host: to use in the basic ID of the metric
 
 %% Created by benoitc on 26/06/16.
 

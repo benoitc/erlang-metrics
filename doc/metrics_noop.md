@@ -1,11 +1,11 @@
 
 
-# Module metrics_folsom #
+# Module metrics_noop #
 * [Description](#description)
 * [Function Index](#index)
 * [Function Details](#functions)
 
-folsom backend.
+noop backend.
 
 <a name="index"></a>
 
@@ -23,14 +23,11 @@ folsom backend.
 
 ### new/3 ###
 
-<pre><code>
-new(X1::atom(), Name::any(), Config::#{}) -&gt; ok | {error, term()}
-</code></pre>
-<br />
+`new(Name, Type, Config) -> any()`
 
 <a name="update-3"></a>
 
 ### update/3 ###
 
-`update(Name, Val, Config) -> any()`
+`update(Name, Probe, Config) -> any()`
 

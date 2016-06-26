@@ -5,6 +5,8 @@
 * [Function Index](#index)
 * [Function Details](#functions)
 
+__Behaviours:__ [`application`](application.md), [`gen_server`](gen_server.md).
+
 <a name="types"></a>
 
 ## Data Types ##
@@ -22,11 +24,31 @@ metric() = counter | histogram | gauge | meter | spiral
 
 
 
-### <a name="type-metrics_engine">metrics_engine()</a> ###
+### <a name="type-probe">probe()</a> ###
 
 
 <pre><code>
-metrics_engine() = #metrics_ng{}
+probe() = {c, integer()} | <a href="#type-value">value()</a>
+</code></pre>
+
+
+
+
+### <a name="type-state">state()</a> ###
+
+
+<pre><code>
+state() = #state{}
+</code></pre>
+
+
+
+
+### <a name="type-value">value()</a> ###
+
+
+<pre><code>
+value() = any()
 </code></pre>
 
 <a name="index"></a>
@@ -34,198 +56,146 @@ metrics_engine() = #metrics_ng{}
 ## Function Index ##
 
 
-<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#decrement_counter-2">decrement_counter/2</a></td><td>decrement a counter with 1.</td></tr><tr><td valign="top"><a href="#decrement_counter-3">decrement_counter/3</a></td><td>decrement a counter with value.</td></tr><tr><td valign="top"><a href="#decrement_spiral-2">decrement_spiral/2</a></td><td>decrement a spiral with 1.</td></tr><tr><td valign="top"><a href="#decrement_spiral-3">decrement_spiral/3</a></td><td>decrement a spiral with value.</td></tr><tr><td valign="top"><a href="#delete-2">delete/2</a></td><td>delete a metric.</td></tr><tr><td valign="top"><a href="#get_value-2">get_value/2</a></td><td>Fetch the current value of the metric.</td></tr><tr><td valign="top"><a href="#increment_counter-2">increment_counter/2</a></td><td>increment a counter with 1.</td></tr><tr><td valign="top"><a href="#increment_counter-3">increment_counter/3</a></td><td>increment a counter with Value.</td></tr><tr><td valign="top"><a href="#increment_spiral-2">increment_spiral/2</a></td><td>increment a spiral with 1.</td></tr><tr><td valign="top"><a href="#increment_spiral-3">increment_spiral/3</a></td><td>increment a spiral with Value.</td></tr><tr><td valign="top"><a href="#init-1">init/1</a></td><td>set the module to use for metrics.</td></tr><tr><td valign="top"><a href="#new-3">new/3</a></td><td>create a new metric.</td></tr><tr><td valign="top"><a href="#sample-2">sample/2</a></td><td>Tells the metric to take a sample.</td></tr><tr><td valign="top"><a href="#update_gauge-3">update_gauge/3</a></td><td>update a gauge with a value.</td></tr><tr><td valign="top"><a href="#update_histogram-3">update_histogram/3</a></td><td>update an histogram with a value or the duration of a function.</td></tr><tr><td valign="top"><a href="#update_meter-3">update_meter/3</a></td><td>update a meter with a valyue.</td></tr></table>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#backend-0">backend/0</a></td><td>retrieve the current backend name.</td></tr><tr><td valign="top"><a href="#backend-1">backend/1</a></td><td>set the backend to use.</td></tr><tr><td valign="top"><a href="#code_change-3">code_change/3</a></td><td></td></tr><tr><td valign="top"><a href="#handle_call-3">handle_call/3</a></td><td></td></tr><tr><td valign="top"><a href="#handle_cast-2">handle_cast/2</a></td><td></td></tr><tr><td valign="top"><a href="#handle_info-2">handle_info/2</a></td><td></td></tr><tr><td valign="top"><a href="#init-1">init/1</a></td><td></td></tr><tr><td valign="top"><a href="#new-2">new/2</a></td><td> initialise a metric.</td></tr><tr><td valign="top"><a href="#start-2">start/2</a></td><td></td></tr><tr><td valign="top"><a href="#start_link-0">start_link/0</a></td><td></td></tr><tr><td valign="top"><a href="#stop-1">stop/1</a></td><td></td></tr><tr><td valign="top"><a href="#terminate-2">terminate/2</a></td><td></td></tr><tr><td valign="top"><a href="#update-1">update/1</a></td><td>increment a counter with 1.</td></tr><tr><td valign="top"><a href="#update-2">update/2</a></td><td>update a metric.</td></tr></table>
 
 
 <a name="functions"></a>
 
 ## Function Details ##
 
-<a name="decrement_counter-2"></a>
+<a name="backend-0"></a>
 
-### decrement_counter/2 ###
+### backend/0 ###
 
 <pre><code>
-decrement_counter(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a>, Name::any()) -&gt; ok | {error, term()}
+backend() -&gt; atom()
 </code></pre>
 <br />
 
-decrement a counter with 1
+retrieve the current backend name
 
-<a name="decrement_counter-3"></a>
+<a name="backend-1"></a>
 
-### decrement_counter/3 ###
+### backend/1 ###
 
 <pre><code>
-decrement_counter(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a>, Name::any(), Value::pos_integer()) -&gt; ok | {error, term()}
+backend(Mod::atom()) -&gt; ok
 </code></pre>
 <br />
 
-decrement a counter with value
+set the backend to use
 
-<a name="decrement_spiral-2"></a>
+<a name="code_change-3"></a>
 
-### decrement_spiral/2 ###
+### code_change/3 ###
 
 <pre><code>
-decrement_spiral(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a>, Name::any()) -&gt; ok | {error, term()}
+code_change(OldVsn::term(), State::<a href="#type-state">state()</a>, Extra::term()) -&gt; {ok, <a href="#type-state">state()</a>}
 </code></pre>
 <br />
 
-decrement a spiral with 1
+<a name="handle_call-3"></a>
 
-<a name="decrement_spiral-3"></a>
-
-### decrement_spiral/3 ###
+### handle_call/3 ###
 
 <pre><code>
-decrement_spiral(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a>, Name::any(), Value::pos_integer()) -&gt; ok | {error, term()}
+handle_call(X1::term(), From::term(), State::<a href="#type-state">state()</a>) -&gt; {reply, term(), <a href="#type-state">state()</a>}
 </code></pre>
 <br />
 
-decrement a spiral with value
+<a name="handle_cast-2"></a>
 
-<a name="delete-2"></a>
-
-### delete/2 ###
+### handle_cast/2 ###
 
 <pre><code>
-delete(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a>, Name::any()) -&gt; ok
+handle_cast(Msg::term(), State::<a href="#type-state">state()</a>) -&gt; {noreply, <a href="#type-state">state()</a>}
 </code></pre>
 <br />
 
-delete a metric
+<a name="handle_info-2"></a>
 
-<a name="get_value-2"></a>
-
-### get_value/2 ###
+### handle_info/2 ###
 
 <pre><code>
-get_value(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a>, Name::any()) -&gt; term() | {error, term()}
+handle_info(Info::term(), State::<a href="#type-state">state()</a>) -&gt; {noreply, <a href="#type-state">state()</a>}
 </code></pre>
 <br />
-
-Fetch the current value of the metric.
-
-<a name="increment_counter-2"></a>
-
-### increment_counter/2 ###
-
-<pre><code>
-increment_counter(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a>, Name::any()) -&gt; ok | {error, term()}
-</code></pre>
-<br />
-
-increment a counter with 1
-
-<a name="increment_counter-3"></a>
-
-### increment_counter/3 ###
-
-<pre><code>
-increment_counter(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a>, Name::any(), Value::pos_integer()) -&gt; ok | {error, term()}
-</code></pre>
-<br />
-
-increment a counter with Value
-
-<a name="increment_spiral-2"></a>
-
-### increment_spiral/2 ###
-
-<pre><code>
-increment_spiral(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a>, Name::any()) -&gt; ok | {error, term()}
-</code></pre>
-<br />
-
-increment a spiral with 1
-
-<a name="increment_spiral-3"></a>
-
-### increment_spiral/3 ###
-
-<pre><code>
-increment_spiral(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a>, Name::any(), Value::pos_integer()) -&gt; ok | {error, term()}
-</code></pre>
-<br />
-
-increment a spiral with Value
 
 <a name="init-1"></a>
 
 ### init/1 ###
 
 <pre><code>
-init(Mod::atom()) -&gt; <a href="#type-metrics_engine">metrics_engine()</a>
+init(X1::term()) -&gt; {ok, <a href="#type-state">state()</a>}
 </code></pre>
 <br />
 
-set the module to use for metrics.
-Types are: counter, histograme, gauge, meter
+<a name="new-2"></a>
 
-modules supported are:
-
-* `metrics_folsom`: to interface folsom
-
-* `metrics_exometer`: to interface to exometer
-
-* `metrics_dummy`: a dummy module to use by default.
-
-
-<a name="new-3"></a>
-
-### new/3 ###
+### new/2 ###
 
 <pre><code>
-new(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a>, Type::<a href="#type-metric">metric()</a>, Name::any()) -&gt; ok | {error, term()}
+new(Type::<a href="#type-metric">metric()</a>, Name::list()) -&gt; ok
 </code></pre>
 <br />
 
-create a new metric
+initialise a metric
 
-<a name="sample-2"></a>
+<a name="start-2"></a>
 
-### sample/2 ###
+### start/2 ###
 
 <pre><code>
-sample(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a>, Name::any()) -&gt; ok | unsupported | list() | {error, term()}
+start(StartType::<a href="application.md#type-start_type">application:start_type()</a>, StartArgs::any()) -&gt; {ok, pid()}
 </code></pre>
 <br />
 
-Tells the metric to take a sample.
+<a name="start_link-0"></a>
 
-<a name="update_gauge-3"></a>
-
-### update_gauge/3 ###
+### start_link/0 ###
 
 <pre><code>
-update_gauge(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a>, Name::any(), Value::number()) -&gt; ok | {error, term()}
+start_link() -&gt; {ok, pid()}
 </code></pre>
 <br />
 
-update a gauge with a value
+<a name="stop-1"></a>
 
-<a name="update_histogram-3"></a>
-
-### update_histogram/3 ###
+### stop/1 ###
 
 <pre><code>
-update_histogram(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a>, Name::any(), ValueOrFun::number()) -&gt; ok | {error, term()}
+stop(State::atom()) -&gt; ok
 </code></pre>
 <br />
 
-update an histogram with a value or the duration of a function. When
-passing a function the result will be returned once the metric have been
-updated with the duration.
+<a name="terminate-2"></a>
 
-<a name="update_meter-3"></a>
-
-### update_meter/3 ###
+### terminate/2 ###
 
 <pre><code>
-update_meter(Metrics_ng::<a href="#type-metrics_engine">metrics_engine()</a>, Name::any(), Value::number()) -&gt; ok | {error, term()}
+terminate(Reason::term(), State::<a href="#type-state">state()</a>) -&gt; ok
 </code></pre>
 <br />
 
-update a meter with a valyue
+<a name="update-1"></a>
+
+### update/1 ###
+
+<pre><code>
+update(Name::list()) -&gt; ok | any()
+</code></pre>
+<br />
+
+increment a counter with 1
+
+<a name="update-2"></a>
+
+### update/2 ###
+
+<pre><code>
+update(Name::list(), Probe::<a href="#type-probe">probe()</a>) -&gt; ok | any()
+</code></pre>
+<br />
+
+update a metric
 

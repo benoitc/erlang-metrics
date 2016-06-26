@@ -61,9 +61,12 @@ update(Name) ->
 update(Name, Probe) ->
   metrics_mod:update(Name, Probe).
 
-
+%% @doc retrieve the current backend name
+-spec backend() -> atom().
 backend() -> gen_server:call(?MODULE, get_backend).
 
+%% @doc set the backend to use
+-spec backend(atom()) -> ok.
 backend(Mod) ->
   _ = code:ensure_loaded(Mod),
   case erlang:function_exported(Mod, update, 3) of
@@ -138,7 +141,7 @@ code_change(_OldVsn, State, _Extra) ->
 
 
 metrics_mod() ->
-  Mod = application:get_env(metrics, mod, metrics_noop),
+  Mod = application:get_env(metrics, metrics_mod, metrics_noop),
   _ = code:ensure_loaded(Mod),
   case erlang:function_exported(Mod, update, 3) of
     false ->

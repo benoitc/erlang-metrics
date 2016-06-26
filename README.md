@@ -41,7 +41,8 @@ Depending on the backend the following metrics types can be passed: counter | hi
 A counter can simply be incremented by 1 using `metrics:update/1`. or by passing a positive or negative integer like this:
 
 ```
-metrics:update("c", {c, 1}).`''
+metrics:update("c", {c, 1}).
+```
 
 Other metrics are updated via `metrics:update/2`.
 

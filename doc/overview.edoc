@@ -1,16 +1,19 @@
 @copyright 2016 Benoît Chesneau.
-@version 1.2.0
+@version 2.0.0
 @title: metrics: A generic interface to different metrics systems in Erlang.
 
 @doc
 
 # metrics
 
-A generic interface to folsom or exometer or any compliant interface. This
+A generic interface to folsom, exometer, grapherl or any compliant interface. This
 application have been extracted from
 [hackney](https://github.com/benoitc/hackney).
 
-Currently support [Folsom](https://github.com/folsom-project/folsom) and [Exometer](https://github.com/Feuerlabs/exometer)
+Currently support [Folsom](https://github.com/folsom-project/folsom), [Exometer](https://github.com/Feuerlabs/exometer) and
+[Grapherl](https://github.com/processone/grapherl)
+
+> If you need teh support for another backend, please [open a ticket](https://github.com/benoitc/erlang-metrics/issues).
 
 
 [![Hex pm](http://img.shields.io/hexpm/v/metrics.svg?style=flat)](https://hex.pm/packages/metrics)
@@ -19,17 +22,22 @@ Example:
 --------
 
 <pre lang="erlang">
-
-%% initialize an engine
-Engine = metrics:init(metrics_exometer),
-
-%% create a counter named TestCounter
-ok = metrics:new(Engine, counter, TestCounter),
-
-%% Increment the counter
-
-metrics:increment_counter(Engine, TestCounter).
-
+1> application:ensure_all_started(metrics).
+{ok,[metrics]}
+2> application:ensure_all_started(folsom).
+{ok,[bear,folsom]}
+3> metrics:backend(metrics_folsom).
+ok
+4> metrics:new(counter, "c").
+ok
+5> metrics:update("c").
+ok
+6> folsom_metrics:get_metric_value("c").
+1
+7> metrics:update("c", {c, 1}).
+ok
+8> folsom_metrics:get_metric_value("c").
+2
 </pre>
 
 

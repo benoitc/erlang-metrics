@@ -1,106 +1,31 @@
-%%% -*- erlang -*-
-%%%
-%%% This file is part of metrics released under the BSD license.
-%%% See the LICENSE for more information.
-%%%
-%%% @doc metrics module for exometer
+%% Copyright (c) 2016, Benoit Chesneau.
+%%
+%% This file is part of barrel_metrics released under the BSD license.
+%% See the NOTICE for more information.
+
+
+%% Created by benoitc on 26/06/16.
+
 -module(metrics_exometer).
+-author("Benoit Chesneau").
+
+%% API
+-export([new/3, update/3]).
 
 
--export([
-    new/2,
-    delete/1,
-    sample/1,
-    get_value/1,
-    increment_counter/1,
-    increment_counter/2,
-    decrement_counter/1,
-    decrement_counter/2,
-    update_histogram/2,
-    update_gauge/2,
-    update_meter/2,
-    increment_spiral/1,
-    increment_spiral/2,
-    decrement_spiral/1,
-    decrement_spiral/2]).
+-spec new(atom(), any(), map()) -> ok | {error, metric_exists | unsupported_type}.
+new(counter, Name, _Config) ->
+  exometer:ensure(Name, counter, []);
+new(histogram, Name, _Config) ->
+  exometer:ensure(Name, histogram, []);
+new(gauge, Name, _Config) ->
+  exometer:ensure(Name, gauge, []);
+new(meter, Name, _Config) ->
+  exometer:ensure(Name, meter, []);
+new(spiral, Name, _Config) ->
+  exometer:ensure(Name, spiral, []);
+new(_, _, _) ->
+  {error, unsupported_type}.
 
--spec new(atom(), any()) -> ok | {error, metric_exists | unsupported_type}.
-new(counter, Name) ->
-    exometer:ensure(Name, counter, []);
-new(histogram, Name) ->
-    exometer:ensure(Name, histogram, []);
-new(gauge, Name) ->
-    exometer:ensure(Name, gauge, []);
-new(meter, Name) ->
-    exometer:ensure(Name, meter, []);
-new(spiral, Name) ->
-    exometer:ensure(Name, spiral, []);
-new(_, _) ->
-    {error, unsupported_type}.
-
-delete(Name) ->
-    exometer:delete(Name).
-
-sample(Name) ->
-    exometer:sample(Name).
-
-get_value(Name) ->
-    exometer:get_value(Name).
-    
--spec increment_counter(any()) -> ok | {error, term()}.
-increment_counter(Name) ->
-    notify(Name, 1, counter).
-
--spec increment_counter(any(), pos_integer()) ->  ok | {error, term()}.
-increment_counter(Name, Value) ->
-    notify(Name, Value, counter).
-
--spec decrement_counter(any()) ->  ok | {error, term()}.
-decrement_counter(Name) ->
-    notify(Name, -1, counter).
-
--spec decrement_counter(any(), pos_integer()) ->  ok | {error, term()}.
-decrement_counter(Name, Value) ->
-    notify(Name, -Value, counter).
-
--spec update_histogram(any(), number()) ->  ok | {error, term()};
-                      (any(), function()) ->  ok | {error, term()}.
-update_histogram(Name, Fun) when is_function(Fun, 0) ->
-    Begin = os:timestamp(),
-    Result = Fun(),
-    Duration = timer:now_diff(os:timestamp(), Begin) div 1000,
-    case notify(Name, Duration, histogram) of
-        ok -> Result;
-        Error -> throw(Error)
-    end;
-update_histogram(Name, Value) when is_number(Value) ->
-    notify(Name, Value, histogram).
-
--spec update_gauge(any(), number()) ->  ok | {error, term()}.
-update_gauge(Name, Value) ->
-    notify(Name, Value, gauge).
-
--spec update_meter(any(), number()) ->  ok | {error, term()}.
-update_meter(Name, Value) ->
-    notify(Name, Value, meter).
-
--spec increment_spiral(any()) -> ok | {error, term()}.
-increment_spiral(Name) ->
-    notify(Name, 1, spiral).
-
--spec increment_spiral(any(), pos_integer()) ->  ok | {error, term()}.
-increment_spiral(Name, Value) ->
-    notify(Name, Value, spiral).
-
--spec decrement_spiral(any()) ->  ok | {error, term()}.
-decrement_spiral(Name) ->
-    notify(Name, -1, spiral).
-
--spec decrement_spiral(any(), pos_integer()) ->  ok | {error, term()}.
-decrement_spiral(Name, Value) ->
-    notify(Name, -Value, spiral).
-
-
--spec notify(any(), any(), atom()) ->  ok | {error, term()}.
-notify(Name, Op, Type) ->
-    exometer:update_or_create(Name, Op, Type, []).
+update(Name, {c, I}, _Config) when is_integer(I) -> exometer:update(Name, I);
+update(Name, Val, _Config) -> exometer:update(Name, Val).

@@ -1,143 +1,168 @@
-%%% -*- erlang -*-
-%%%
-%%% This file is part of metrics released under the BSD license.
-%%% See the LICENSE for more information.
-%%%
-
--module('metrics').
-
-%% API exports
--export([init/1]).
--export([
-    new/3,
-    delete/2,
-    sample/2,
-    get_value/2,
-    increment_counter/2,
-    increment_counter/3,
-    decrement_counter/2,
-    decrement_counter/3,
-    update_histogram/3,
-    update_gauge/3,
-    update_meter/3,
-    increment_spiral/2,
-    increment_spiral/3,
-    decrement_spiral/2,
-    decrement_spiral/3]).
-
-
--record(metrics_ng, {mod}).
-
--type metrics_engine() :: #metrics_ng{}.
--type metric() :: counter | histogram | gauge | meter | spiral.
-
--export_types([metrics_engine/0,
-               metric/0]).
-
-%%====================================================================
-%% API functions
-%%====================================================================
-
-%% @doc set the module to use for metrics.
-%% Types are: counter, histograme, gauge, meter
+%% Copyright (c) 2016, Benoit Chesneau.
 %%
-%% modules supported are:
-%% <ul>
-%% <li>`metrics_folsom': to interface folsom</li>
-%% <li>`metrics_exometer': to interface to exometer</li>
-%% <li>`metrics_dummy': a dummy module to use by default.</li>
-%% </ul>
--spec init(Mod :: atom()) -> metrics_engine().
-init(Mod) ->
-    %% check the module
-    _ = code:ensure_loaded(Mod),
-    case erlang:function_exported(Mod, new, 2) of
-        false ->
-            error(badarg);
-        true ->
-            ok
-    end,
-    #metrics_ng{mod=Mod}.
+%% This file is part of barrel_metrics released under the BSD license.
+%% See the NOTICE for more information.
+
+%% Created by benoitc on 26/06/16.
+
+-module(metrics).
+-author("Benoit Chesneau").
+-behaviour(gen_server).
+-behaviour(application).
+
+%% API
+-export([new/2]).
+-export([update/1, update/2]).
+-export([backend/0, backend/1]).
+
+-export([start_link/0]).
+
+%% application callbacks
+
+-export([start/2, stop/1]).
 
 
-%% @doc create a new metric
--spec new(metrics_engine(), metric(), any()) -> ok | {error, term()}.
-new(#metrics_ng{mod=Mod}, Type, Name) ->
-    Mod:new(Type, Name).
+%% gen_server callbacks
+-export([init/1, handle_call/3, handle_cast/2,handle_info/2,terminate/2, code_change/3]).
 
-%% @doc delete a metric
--spec delete(metrics_engine(), any()) -> ok.
-delete(#metrics_ng{mod=Mod}, Name) ->
-    Mod:delete(Name).
+-include_lib("syntax_tools/include/merl.hrl").
 
+-define(SERVER, ?MODULE).
 
-%% @doc Tells the metric to take a sample.
--spec sample(metrics_engine(), any()) -> ok | unsupported | list() | {error, term()}.
-sample(#metrics_ng{mod=Mod} , Name) ->
-    Mod:sample(Name).
+-define(TAB, metrics).
 
-%% @doc Fetch the current value of the metric.
--spec get_value(metrics_engine(), any()) ->  term() | {error, term()}.
-get_value(#metrics_ng{mod=Mod} , Name) ->
-    Mod:get_value(Name).
+-record(state, {mod}).
 
+%%%===================================================================
+%%% Types
+%%%===================================================================
+
+-type state() :: #state{}.
+-type metric() :: counter | histogram | gauge | meter | spiral.
+-type value() :: any().
+-type probe() :: {c, integer()} | value().
+
+%%%===================================================================
+%%% API
+%%%===================================================================
+
+%% @doc  initialise a metric
+-spec new(metric(), list()) -> ok.
+new(Type, Name) ->
+  metrics_mod:new(Type, Name).
 
 %% @doc increment a counter with 1
--spec increment_counter(metrics_engine(), any()) -> ok | {error, term()}.
-increment_counter(#metrics_ng{mod=Mod}, Name) ->
-    Mod:increment_counter(Name).
+-spec update(list()) -> ok | any().
+update(Name) ->
+  update(Name, {c, 1}).
 
-%% @doc increment a counter with Value
--spec increment_counter(metrics_engine(), any(), pos_integer()) ->  ok | {error, term()}.
-increment_counter(#metrics_ng{mod=Mod}, Name, Value) ->
-    Mod:increment_counter(Name, Value).
-
-%% @doc decrement a counter with 1
--spec decrement_counter(metrics_engine(), any()) ->  ok | {error, term()}.
-decrement_counter(#metrics_ng{mod=Mod}, Name) ->
-    Mod:decrement_counter(Name).
-
-%% @doc decrement a counter with value
--spec decrement_counter(metrics_engine(), any(), pos_integer()) ->  ok | {error, term()}.
-decrement_counter(#metrics_ng{mod=Mod}, Name, Value) ->
-    Mod:decrement_counter(Name, Value).
+%% @doc update a metric
+-spec update(list(), probe()) -> ok | any().
+update(Name, Probe) ->
+  metrics_mod:update(Name, Probe).
 
 
-%% @doc update an histogram with a value or the duration of a function. When
-%% passing a function the result will be returned once the metric have been
-%% updated with the duration.
--spec update_histogram
-        (metrics_engine(), any(), number()) ->  ok | {error, term()};
-        (metrics_engine(), any(), function()) ->  ok | {error, term()}.
-update_histogram(#metrics_ng{mod=Mod}, Name, ValueOrFun) ->
-    Mod:update_histogram(Name, ValueOrFun).
+backend() -> gen_server:call(?MODULE, get_backend).
 
-%% @doc update a gauge with a value
--spec update_gauge(metrics_engine(), any(), number()) ->  ok | {error, term()}.
-update_gauge(#metrics_ng{mod=Mod}, Name, Value) ->
-    Mod:update_gauge(Name, Value).
+backend(Mod) ->
+  _ = code:ensure_loaded(Mod),
+  case erlang:function_exported(Mod, update, 3) of
+    true -> ok;
+    false -> erlang:error(bad_modmetric)
+  end,
+  gen_server:call(?MODULE, {set_backend, Mod}).
 
-%% @doc update a meter with a valyue
--spec update_meter(metrics_engine(), any(), number()) ->  ok | {error, term()}.
-update_meter(#metrics_ng{mod=Mod}, Name, Value) ->
-    Mod:update_meter(Name, Value).
 
-%% @doc increment a spiral with 1
--spec increment_spiral(metrics_engine(), any()) -> ok | {error, term()}.
-increment_spiral(#metrics_ng{mod=Mod}, Name) ->
-    Mod:increment_spiral(Name).
 
-%% @doc increment a spiral with Value
--spec increment_spiral(metrics_engine(), any(), pos_integer()) ->  ok | {error, term()}.
-increment_spiral(#metrics_ng{mod=Mod}, Name, Value) ->
-    Mod:increment_spiral(Name, Value).
+-spec start_link() -> {ok, pid()}.
+start_link() ->
+  gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
 
-%% @doc decrement a spiral with 1
--spec decrement_spiral(metrics_engine(), any()) ->  ok | {error, term()}.
-decrement_spiral(#metrics_ng{mod=Mod}, Name) ->
-    Mod:decrement_spiral(Name).
+%%%===================================================================
+%%% application callbacks
+%%%===================================================================
+%%%
+-spec start(application:start_type(), any()) -> {ok, pid()}.
+start(_StartType, _StartArgs) ->
+  'metrics_sup':start_link().
 
-%% @doc decrement a spiral with value
--spec decrement_spiral(metrics_engine(), any(), pos_integer()) ->  ok | {error, term()}.
-decrement_spiral(#metrics_ng{mod=Mod}, Name, Value) ->
-    Mod:decrement_spiral(Name, Value).
+-spec stop(atom()) -> ok.
+stop(_State) ->
+  ok.
+
+
+%%%===================================================================
+%%% gen_server callbacks
+%%%===================================================================
+%%%
+-spec init(term()) -> {ok, state()}.
+init([]) ->
+  Mod = metrics_mod(),
+  Config = init_mod(Mod),
+  ok = build_metrics_mod(Mod, Config),
+
+  {ok, #state{mod=Mod}}.
+
+-spec handle_call(term(), term(), state()) -> {reply, term(), state()}.
+
+handle_call(get_backend, _From, State) ->
+  {reply, State#state.mod, State};
+handle_call({set_backend, Mod}, _From, State) ->
+  if
+    State#state.mod /= Mod ->
+      Config = init_mod(Mod),
+      build_metrics_mod(Mod, Config);
+    true -> ok
+  end,
+  {reply, ok, State}.
+
+-spec handle_cast(term(), state()) -> {noreply, state()}.
+handle_cast(_Msg, State) ->
+  {noreply, State}.
+
+-spec handle_info(term(), state()) -> {noreply, state()}.
+handle_info(_Info, State) ->
+  {noreply, State}.
+
+-spec terminate(term(), state()) -> ok.
+terminate(_Reason, _State) ->
+  ok.
+
+-spec code_change(term(), state(), term()) -> {ok, state()}.
+code_change(_OldVsn, State, _Extra) ->
+  {ok, State}.
+
+%%%===================================================================
+%%% Internal functions
+%%%===================================================================
+
+
+metrics_mod() ->
+  Mod = application:get_env(metrics, mod, metrics_noop),
+  _ = code:ensure_loaded(Mod),
+  case erlang:function_exported(Mod, update, 3) of
+    false ->
+      error_logger:error_msg("bad metric module"),
+      erlang:error(bad_modmetric);
+    true ->
+      Mod
+  end.
+
+init_mod(Mod) ->
+  case erlang:function_exported(Mod, init, 0) of
+    false -> #{};
+    true -> Mod:init()
+  end.
+
+build_metrics_mod(Mod, Config) when is_atom(Mod), is_map(Config) ->
+  error_logger:info_msg("build metrics module: ~s~n", [Mod]),
+  New = erl_syntax:function(merl:term('new'),
+    [?Q("(Type, Name) -> _@Mod@:new(Type, Name, _@Config@)")]),
+  Update = erl_syntax:function(merl:term('update'),
+    [?Q("(Name, Probe) -> _@Mod@:update(Name, Probe, _@Config@)")]),
+  Module = ?Q("-module('metrics_mod')."),
+  Exported = ?Q("-export(['new'/2, 'update'/2])."),
+  Functions = [ ?Q("'@_F'() -> [].") || F <- [New, Update]],
+  Forms = lists:flatten([Module, Exported, Functions]),
+  merl:compile_and_load(Forms, [verbose]),
+  ok.

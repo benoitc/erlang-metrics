@@ -44,7 +44,7 @@ metrics:update("c", {c, 1}).
 
 '''
 
-Other metrics are updated via `metrics:update/2`.
+Other metrics are updated via `metrics:update/2'.
 
 
 ## Example:

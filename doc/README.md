@@ -43,7 +43,41 @@ A counter can simply be incremented by 1 using `metrics:update/1`. or by passing
 ```
 metrics:update("c", {c, 1}).`''
 
-Other metrics are updated via <code>metrics:update/2`.## Example:<pre lang="erlang">1> application:ensure_all_started(metrics).{ok,[metrics]}2> application:ensure_all_started(folsom).{ok,[bear,folsom]}3> metrics:backend(metrics_folsom).ok4> metrics:new(counter, "c").ok5> metrics:update("c").ok6> folsom_metrics:get_metric_value("c").17> metrics:update("c", {c, 1}).ok8> folsom_metrics:get_metric_value("c").2</pre>## DocumentationFull doc is available in the <a href="metrics.html"><code>metrics</code></a> module.## Build```$ rebar3 compile</code>''
+Other metrics are updated via `metrics:update/2`.
+
+## Example:
+
+```erlang
+
+1> application:ensure_all_started(metrics).
+{ok,[metrics]}
+2> application:ensure_all_started(folsom).
+{ok,[bear,folsom]}
+3> metrics:backend(metrics_folsom).
+ok
+4> metrics:new(counter, "c").
+ok
+5> metrics:update("c").
+ok
+6> folsom_metrics:get_metric_value("c").
+1
+7> metrics:update("c", {c, 1}).
+ok
+8> folsom_metrics:get_metric_value("c").
+2
+
+```
+
+## Documentation
+
+Full doc is available in the [`metrics`](metrics.md) module.
+
+## Build
+
+```
+$ rebar3 compile
+```
+
 
 
 ## Modules ##

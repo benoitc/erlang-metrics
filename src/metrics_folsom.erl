@@ -11,7 +11,7 @@
 -author("Benoit Chesneau").
 
 %% API
--export([new/3, update/3]).
+-export([new/3, update/3, update_or_create/4]).
 
 -spec new(atom(), any(), map()) -> ok | {error, term()}.
 new(counter, Name, _Config) ->
@@ -33,3 +33,13 @@ update(Name, {c, I}, _Config) when I < 0 ->
   folsom_metrics:notify(Name, {dec, abs(I)});
 update(Name, Val, _Config) ->
   folsom_metrics:notify(Name, Val).
+
+update_or_create(Name, Probe, Type, Config) ->
+  case update(Name, Probe, Config) of
+    ok -> ok;
+    {error, Name, nonexistent_metric} ->
+      new(Type, Name, Config),
+      update(Name, Probe, Config);
+    Error ->
+      Error
+  end.

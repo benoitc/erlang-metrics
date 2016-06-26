@@ -13,6 +13,7 @@
 %% API
 -export([new/2]).
 -export([update/1, update/2]).
+-export([update_or_create/3]).
 -export([backend/0, backend/1]).
 
 -export([start_link/0]).
@@ -60,6 +61,12 @@ update(Name) ->
 -spec update(list(), probe()) -> ok | any().
 update(Name, Probe) ->
   metrics_mod:update(Name, Probe).
+
+%% @doc update a metric and create it if it doesn't exists
+-spec update_or_create(list(), probe(), metric()) -> ok | any().
+update_or_create(Name, Probe, Type) ->
+  metrics_mod:update_or_create(Name, Probe, Type).
+
 
 %% @doc retrieve the current backend name
 -spec backend() -> atom().
@@ -163,9 +170,11 @@ build_metrics_mod(Mod, Config) when is_atom(Mod), is_map(Config) ->
     [?Q("(Type, Name) -> _@Mod@:new(Type, Name, _@Config@)")]),
   Update = erl_syntax:function(merl:term('update'),
     [?Q("(Name, Probe) -> _@Mod@:update(Name, Probe, _@Config@)")]),
+  UpdateOrCreate = erl_syntax:function(merl:term('update_or_create'),
+    [?Q("(Name, Probe, Type) -> _@Mod@:update_or_create(Name, Probe, Type, _@Config@)")]),
   Module = ?Q("-module('metrics_mod')."),
-  Exported = ?Q("-export(['new'/2, 'update'/2])."),
-  Functions = [ ?Q("'@_F'() -> [].") || F <- [New, Update]],
+  Exported = ?Q("-export(['new'/2, 'update'/2, 'update_or_create'/3])."),
+  Functions = [ ?Q("'@_F'() -> [].") || F <- [New, Update, UpdateOrCreate]],
   Forms = lists:flatten([Module, Exported, Functions]),
   merl:compile_and_load(Forms, [verbose]),
   ok.

@@ -34,7 +34,8 @@ folsom_test_() ->
         fun folsom_counter_test_/1,
         fun folsom_counter_test_inc_/1,
         fun folsom_counter_test_mul_/1,
-        fun folsom_gauge_test_/1
+        fun folsom_gauge_test_/1,
+        fun folsom_update_or_create_/1
       ]
     }
   }.
@@ -50,7 +51,8 @@ exometer_test_() ->
         fun exometer_counter_test_/1,
         fun exometer_counter_test_inc_/1,
         fun exometer_counter_test_mul_/1,
-        fun exometer_gauge_test_/1
+        fun exometer_gauge_test_/1,
+        fun exometer_update_or_create_/1
       ]
     }
   }.
@@ -82,6 +84,11 @@ folsom_gauge_test_(_) ->
   metrics:update("g", 1),
   ?_assertEqual(1, folsom_metrics:get_metric_value("g")).
 
+folsom_update_or_create_(_) ->
+  ok = metrics:backend(metrics_folsom),
+  metrics:update_or_create("new_counter", {c, 1}, counter),
+  ?_assertEqual(1, folsom_metrics:get_metric_value("new_counter")).
+
 exometer_counter_test_(_) ->
   ok = metrics:backend(metrics_exometer),
   ok = metrics:new(counter, "c1"),
@@ -109,4 +116,7 @@ exometer_gauge_test_(_) ->
   metrics:update("g1", 1),
   ?_assertMatch({ok, [{value, 1}, _]}, exometer:get_value("g1")).
 
-
+exometer_update_or_create_(_) ->
+  ok = metrics:backend(metrics_exometer),
+  metrics:update_or_create("new_exo_counter", {c, 1}, counter),
+  ?_assertMatch({ok, [{value, 1}, _]}, exometer:get_value("new_exo_counter")).

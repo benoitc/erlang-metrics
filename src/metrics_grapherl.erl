@@ -19,7 +19,7 @@
 -author("Benoit Chesneau").
 
 %% API
--export([init/0, new/3, update/3]).
+-export([init/0, new/3, update/3, update_or_create/4]).
 
 -export([send_metrics/3]).
 
@@ -33,9 +33,9 @@ new(counter, _Name, _Config) -> ok;
 new(gauge, _Name, _Config) -> ok;
 new(_, _, _) -> {error, unsupported_type}.
 
-update(Name, Probe, Config) ->
-  spawn(?MODULE, send_metrics, [Name, Probe, Config]).
+update(Name, Probe, Config) -> spawn(?MODULE, send_metrics, [Name, Probe, Config]).
 
+update_or_create(Name, Probe, _Type, Config) -> update(Name, Probe, Config).
 
 parse_address({_, _, _, _}=Addr) -> Addr;
 parse_address({_, _, _, _, _, _, _, _}= Addr) -> Addr;

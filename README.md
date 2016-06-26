@@ -38,7 +38,12 @@ Depending on the backend the following metrics types can be passed: counter | hi
 
 ### update a metric
 
-A counter can simply be incremented by 1 using <code>metrics:update/1`. or by passing a positive or negative integer like this:```metrics:update("c", {c, 1}).```Other metrics are updated via `metrics:update/2`.## Example:<pre lang="erlang">1> application:ensure_all_started(metrics).{ok,[metrics]}2> application:ensure_all_started(folsom).{ok,[bear,folsom]}3> metrics:backend(metrics_folsom).ok4> metrics:new(counter, "c").ok5> metrics:update("c").ok6> folsom_metrics:get_metric_value("c").17> metrics:update("c", {c, 1}).ok8> folsom_metrics:get_metric_value("c").2</pre>## DocumentationFull doc is available in the <a href="metrics.html"><code>metrics</code></a> module.## Build```$ rebar3 compile</code>''
+A counter can simply be incremented by 1 using `metrics:update/1`. or by passing a positive or negative integer like this:
+
+```
+metrics:update("c", {c, 1}).`''
+
+Other metrics are updated via <code>metrics:update/2`.## Example:<pre lang="erlang">1> application:ensure_all_started(metrics).{ok,[metrics]}2> application:ensure_all_started(folsom).{ok,[bear,folsom]}3> metrics:backend(metrics_folsom).ok4> metrics:new(counter, "c").ok5> metrics:update("c").ok6> folsom_metrics:get_metric_value("c").17> metrics:update("c", {c, 1}).ok8> folsom_metrics:get_metric_value("c").2</pre>## DocumentationFull doc is available in the <a href="metrics.html"><code>metrics</code></a> module.## Build```$ rebar3 compile</code>''
 
 
 ## Modules ##

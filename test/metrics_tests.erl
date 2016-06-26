@@ -84,29 +84,29 @@ folsom_gauge_test_(_) ->
 
 exometer_counter_test_(_) ->
   ok = metrics:backend(metrics_exometer),
-  ok = metrics:new(counter, "c"),
-  metrics:update("c"),
-  ?_assertEqual(1, folsom_metrics:get_metric_value("c")).
+  ok = metrics:new(counter, "c1"),
+  metrics:update("c1"),
+  ?_assertMatch({ok, [{value, 1}, _]}, exometer:get_value("c1")).
 
 exometer_counter_test_inc_(_) ->
   ok = metrics:backend(metrics_exometer),
-  ok = metrics:new(counter, "c"),
-  metrics:update("c", {c, 1}),
-  ?_assertEqual(1, folsom_metrics:get_metric_value("c")).
+  ok = metrics:new(counter, "c1"),
+  metrics:update("c1", {c, 1}),
+  ?_assertMatch({ok, [{value, 1}, _]}, exometer:get_value("c1")).
 
 exometer_counter_test_mul_(_) ->
   ok = metrics:backend(metrics_exometer),
-  ok = metrics:new(counter, "c"),
-  metrics:update("c", {c, 1}),
-  metrics:update("c", {c, 1}),
-  metrics:update("c", {c, 4}),
-  metrics:update("c", {c, -1}),
-  ?_assertEqual(5, folsom_metrics:get_metric_value("c")).
+  ok = metrics:new(counter, "c1"),
+  metrics:update("c1", {c, 1}),
+  metrics:update("c1", {c, 1}),
+  metrics:update("c1", {c, 4}),
+  metrics:update("c1", {c, -1}),
+  ?_assertMatch({ok, [{value, 5}, _]}, exometer:get_value("c1")).
 
 exometer_gauge_test_(_) ->
   ok = metrics:backend(metrics_exometer),
-  ok = metrics:new(gauge, "g"),
-  metrics:update("g", 1),
-  ?_assertEqual(1, folsom_metrics:get_metric_value("g")).
+  ok = metrics:new(gauge, "g1"),
+  metrics:update("g1", 1),
+  ?_assertMatch({ok, [{value, 1}, _]}, exometer:get_value("g1")).
 
 

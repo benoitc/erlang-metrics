@@ -56,7 +56,7 @@ value() = any()
 ## Function Index ##
 
 
-<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#backend-0">backend/0</a></td><td>retrieve the current backend name.</td></tr><tr><td valign="top"><a href="#backend-1">backend/1</a></td><td>set the backend to use.</td></tr><tr><td valign="top"><a href="#code_change-3">code_change/3</a></td><td></td></tr><tr><td valign="top"><a href="#handle_call-3">handle_call/3</a></td><td></td></tr><tr><td valign="top"><a href="#handle_cast-2">handle_cast/2</a></td><td></td></tr><tr><td valign="top"><a href="#handle_info-2">handle_info/2</a></td><td></td></tr><tr><td valign="top"><a href="#init-1">init/1</a></td><td></td></tr><tr><td valign="top"><a href="#new-2">new/2</a></td><td> initialise a metric.</td></tr><tr><td valign="top"><a href="#start-2">start/2</a></td><td></td></tr><tr><td valign="top"><a href="#start_link-0">start_link/0</a></td><td></td></tr><tr><td valign="top"><a href="#stop-1">stop/1</a></td><td></td></tr><tr><td valign="top"><a href="#terminate-2">terminate/2</a></td><td></td></tr><tr><td valign="top"><a href="#update-1">update/1</a></td><td>increment a counter with 1.</td></tr><tr><td valign="top"><a href="#update-2">update/2</a></td><td>update a metric.</td></tr></table>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#backend-0">backend/0</a></td><td>retrieve the current backend name.</td></tr><tr><td valign="top"><a href="#backend-1">backend/1</a></td><td>set the backend to use.</td></tr><tr><td valign="top"><a href="#code_change-3">code_change/3</a></td><td></td></tr><tr><td valign="top"><a href="#handle_call-3">handle_call/3</a></td><td></td></tr><tr><td valign="top"><a href="#handle_cast-2">handle_cast/2</a></td><td></td></tr><tr><td valign="top"><a href="#handle_info-2">handle_info/2</a></td><td></td></tr><tr><td valign="top"><a href="#init-1">init/1</a></td><td></td></tr><tr><td valign="top"><a href="#new-2">new/2</a></td><td> initialise a metric.</td></tr><tr><td valign="top"><a href="#start-2">start/2</a></td><td></td></tr><tr><td valign="top"><a href="#start_link-0">start_link/0</a></td><td></td></tr><tr><td valign="top"><a href="#stop-1">stop/1</a></td><td></td></tr><tr><td valign="top"><a href="#terminate-2">terminate/2</a></td><td></td></tr><tr><td valign="top"><a href="#update-1">update/1</a></td><td>increment a counter with 1.</td></tr><tr><td valign="top"><a href="#update-2">update/2</a></td><td>update a metric.</td></tr><tr><td valign="top"><a href="#update_or_create-3">update_or_create/3</a></td><td>update a metric and create it if it doesn't exists.</td></tr></table>
 
 
 <a name="functions"></a>
@@ -198,4 +198,15 @@ update(Name::list(), Probe::<a href="#type-probe">probe()</a>) -&gt; ok | any()
 <br />
 
 update a metric
+
+<a name="update_or_create-3"></a>
+
+### update_or_create/3 ###
+
+<pre><code>
+update_or_create(Name::list(), Probe::<a href="#type-probe">probe()</a>, Type::<a href="#type-metric">metric()</a>) -&gt; ok | any()
+</code></pre>
+<br />
+
+update a metric and create it if it doesn't exists
 

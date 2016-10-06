@@ -11,7 +11,7 @@
 -author("Benoit Chesneau").
 
 %% API
--export([new/3, update/3, update_or_create/4]).
+-export([new/3, update/3, update_or_create/4, delete/2]).
 
 -spec new(atom(), any(), map()) -> ok | {error, term()}.
 new(counter, Name, _Config) ->
@@ -43,3 +43,6 @@ update_or_create(Name, Probe, Type, Config) ->
     Error ->
       Error
   end.
+
+delete(Name, _Config) ->
+  folsom_metrics:delete_metric(Name).

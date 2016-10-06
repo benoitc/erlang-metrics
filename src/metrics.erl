@@ -15,6 +15,7 @@
 -export([update/1, update/2]).
 -export([update_or_create/3]).
 -export([backend/0, backend/1]).
+-export([delete/1]).
 
 -export([start_link/0]).
 
@@ -66,6 +67,11 @@ update(Name, Probe) ->
 -spec update_or_create(list(), probe(), metric()) -> ok | any().
 update_or_create(Name, Probe, Type) ->
   metrics_mod:update_or_create(Name, Probe, Type).
+
+%% @doc delete a metric
+-spec delete(list()) -> ok | any().
+delete(Name) ->
+  metrics_mod:delete(Name).
 
 
 %% @doc retrieve the current backend name
@@ -172,9 +178,11 @@ build_metrics_mod(Mod, Config) when is_atom(Mod), is_map(Config) ->
     [?Q("(Name, Probe) -> _@Mod@:update(Name, Probe, _@Config@)")]),
   UpdateOrCreate = erl_syntax:function(merl:term('update_or_create'),
     [?Q("(Name, Probe, Type) -> _@Mod@:update_or_create(Name, Probe, Type, _@Config@)")]),
+  Delete = erl_syntax:function(merl:term('delete'),
+    [?Q("(Name) -> _@Mod@:delete(Name, _@Config@)")]),
   Module = ?Q("-module('metrics_mod')."),
-  Exported = ?Q("-export(['new'/2, 'update'/2, 'update_or_create'/3])."),
-  Functions = [ ?Q("'@_F'() -> [].") || F <- [New, Update, UpdateOrCreate]],
+  Exported = ?Q("-export(['new'/2, 'update'/2, 'update_or_create'/3, 'delete'/1])."),
+  Functions = [ ?Q("'@_F'() -> [].") || F <- [New, Update, UpdateOrCreate, Delete]],
   Forms = lists:flatten([Module, Exported, Functions]),
   merl:compile_and_load(Forms, [verbose]),
   ok.

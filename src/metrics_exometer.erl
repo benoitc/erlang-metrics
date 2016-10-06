@@ -11,7 +11,7 @@
 -author("Benoit Chesneau").
 
 %% API
--export([new/3, update/3, update_or_create/4]).
+-export([new/3, update/3, update_or_create/4, delete/2]).
 
 
 -spec new(atom(), any(), map()) -> ok | {error, metric_exists | unsupported_type}.
@@ -35,3 +35,6 @@ update_or_create(Name, {c, I}, Type, _Config) when is_integer(I) ->
   exometer:update_or_create(Name, I, Type, []);
 update_or_create(Name, Val, Type, _Config) ->
   exometer:update_or_create(Name, Val, Type, []).
+
+delete(Name, _Config) ->
+  exometer:delete(Name).

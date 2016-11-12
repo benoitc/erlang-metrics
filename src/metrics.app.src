@@ -7,7 +7,7 @@
    [kernel,
     stdlib
    ]},
-  {env,[]},
+  {env,[{verify_directories, false}]},
   {modules, []},
 
   {maintainers, ["Benoit Chesneau"]},

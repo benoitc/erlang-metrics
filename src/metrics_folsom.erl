@@ -37,6 +37,11 @@ update(Name, {c, I}, _Config) when I >= 0 ->
   notify(Name, {inc, I});
 update(Name, {c, I}, _Config) when I < 0 ->
   notify(Name, {dec, abs(I)});
+update(Name, {duration_fun, Fun}, _Config) ->
+  notify(Name, timer_start),
+  try Fun()
+  after notify(Name, timer_end)
+  end;
 update(Name, Val, _Config) ->
   notify(Name, Val).
 

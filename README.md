@@ -4,7 +4,7 @@
 
 Copyright (c) 2017 Benoît Chesneau.
 
-__Version:__ 2.3.0
+__Version:__ 2.4.0
 
 # metrics
 

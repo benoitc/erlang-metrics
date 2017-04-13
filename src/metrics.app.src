@@ -1,6 +1,6 @@
 {application, 'metrics',
  [{description, "A generic interface to different metrics systems in Erlang."},
-  {vsn, "2.3.0"},
+  {vsn, "2.4.0"},
   {registered, []},
   {mod, {metrics, []}},
   {applications,

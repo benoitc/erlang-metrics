@@ -40,7 +40,7 @@
 -type metric_name() :: list().
 -type metric() :: counter | histogram | gauge | meter | spiral | duration.
 -type value() :: any().
--type probe() :: {c, integer()} | timer_start | timer_end | value().
+-type probe() :: {c, integer()} | timer_start | timer_end | {duration_fun, fun()} | value().
 
 %%%===================================================================
 %%% API

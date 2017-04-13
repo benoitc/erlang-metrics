@@ -38,7 +38,7 @@ metric_name() = list()
 
 
 <pre><code>
-probe() = {c, integer()} | timer_start | timer_end | <a href="#type-value">value()</a>
+probe() = {c, integer()} | timer_start | timer_end | {duration_fun, function()} | <a href="#type-value">value()</a>
 </code></pre>
 
 

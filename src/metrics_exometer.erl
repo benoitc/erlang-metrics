@@ -35,6 +35,11 @@ ensure(Name, Type) ->
 
 
 update(Name, {c, I}, _Config) when is_integer(I) -> update(Name, I);
+update(Name, {duration_fun, Fun}, _Config) when is_function(Fun) ->
+  update(Name, timer_start),
+  try Fun()
+  after update(Name, timer_end)
+  end;
 update(Name, Val, _Config) ->  update(Name, Val).
 
 update(Name, Val) ->
@@ -43,6 +48,9 @@ update(Name, Val) ->
 
 update_or_create(Name, {c, I}, Type, _Config) when is_integer(I) ->
   update_or_create(Name, I, Type);
+update_or_create(Name, {duration_fun, Fun}, Type, Config) when is_function(Fun) ->
+  _ = ensure(Name, Type),
+  update_or_create(Name, {duration_fun, Fun}, Config);
 update_or_create(Name, Val, Type, _Config) ->
   update_or_create(Name, Val, Type).
 

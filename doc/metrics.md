@@ -18,7 +18,17 @@ __Behaviours:__ [`application`](application.md), [`gen_server`](gen_server.md).
 
 
 <pre><code>
-metric() = counter | histogram | gauge | meter | spiral
+metric() = counter | histogram | gauge | meter | spiral | duration
+</code></pre>
+
+
+
+
+### <a name="type-metric_name">metric_name()</a> ###
+
+
+<pre><code>
+metric_name() = list()
 </code></pre>
 
 
@@ -28,17 +38,7 @@ metric() = counter | histogram | gauge | meter | spiral
 
 
 <pre><code>
-probe() = {c, integer()} | <a href="#type-value">value()</a>
-</code></pre>
-
-
-
-
-### <a name="type-state">state()</a> ###
-
-
-<pre><code>
-state() = #state{}
+probe() = {c, integer()} | timer_start | timer_end | <a href="#type-value">value()</a>
 </code></pre>
 
 
@@ -89,19 +89,17 @@ set the backend to use
 
 ### code_change/3 ###
 
-<pre><code>
-code_change(OldVsn::term(), State::<a href="#type-state">state()</a>, Extra::term()) -&gt; {ok, <a href="#type-state">state()</a>}
-</code></pre>
-<br />
+`code_change(OldVsn, State, Extra) -> any()`
 
 <a name="delete-1"></a>
 
 ### delete/1 ###
 
 <pre><code>
-delete(Name::list()) -&gt; ok | any()
+delete(Name) -&gt; Result
 </code></pre>
-<br />
+
+<ul class="definitions"><li><code>Name = <a href="#type-metric_name">metric_name()</a></code></li><li><code>Result = ok | any()</code></li></ul>
 
 delete a metric
 
@@ -109,46 +107,35 @@ delete a metric
 
 ### handle_call/3 ###
 
-<pre><code>
-handle_call(X1::term(), From::term(), State::<a href="#type-state">state()</a>) -&gt; {reply, term(), <a href="#type-state">state()</a>}
-</code></pre>
-<br />
+`handle_call(X1, From, State) -> any()`
 
 <a name="handle_cast-2"></a>
 
 ### handle_cast/2 ###
 
-<pre><code>
-handle_cast(Msg::term(), State::<a href="#type-state">state()</a>) -&gt; {noreply, <a href="#type-state">state()</a>}
-</code></pre>
-<br />
+`handle_cast(Msg, State) -> any()`
 
 <a name="handle_info-2"></a>
 
 ### handle_info/2 ###
 
-<pre><code>
-handle_info(Info::term(), State::<a href="#type-state">state()</a>) -&gt; {noreply, <a href="#type-state">state()</a>}
-</code></pre>
-<br />
+`handle_info(Info, State) -> any()`
 
 <a name="init-1"></a>
 
 ### init/1 ###
 
-<pre><code>
-init(X1::term()) -&gt; {ok, <a href="#type-state">state()</a>}
-</code></pre>
-<br />
+`init(X1) -> any()`
 
 <a name="new-2"></a>
 
 ### new/2 ###
 
 <pre><code>
-new(Type::<a href="#type-metric">metric()</a>, Name::list()) -&gt; ok
+new(Metric, Name) -&gt; Result
 </code></pre>
-<br />
+
+<ul class="definitions"><li><code>Metric = <a href="#type-metric">metric()</a></code></li><li><code>Name = <a href="#type-metric_name">metric_name()</a></code></li><li><code>Result = ok</code></li></ul>
 
 initialise a metric
 
@@ -183,19 +170,17 @@ stop(State::atom()) -&gt; ok
 
 ### terminate/2 ###
 
-<pre><code>
-terminate(Reason::term(), State::<a href="#type-state">state()</a>) -&gt; ok
-</code></pre>
-<br />
+`terminate(Reason, State) -> any()`
 
 <a name="update-1"></a>
 
 ### update/1 ###
 
 <pre><code>
-update(Name::list()) -&gt; ok | any()
+update(Name) -&gt; Result
 </code></pre>
-<br />
+
+<ul class="definitions"><li><code>Name = <a href="#type-metric_name">metric_name()</a></code></li><li><code>Result = ok | any()</code></li></ul>
 
 increment a counter with 1
 
@@ -204,9 +189,10 @@ increment a counter with 1
 ### update/2 ###
 
 <pre><code>
-update(Name::list(), Probe::<a href="#type-probe">probe()</a>) -&gt; ok | any()
+update(Name, Probe) -&gt; Result
 </code></pre>
-<br />
+
+<ul class="definitions"><li><code>Name = <a href="#type-metric_name">metric_name()</a></code></li><li><code>Probe = <a href="#type-probe">probe()</a></code></li><li><code>Result = ok | any()</code></li></ul>
 
 update a metric
 
@@ -215,9 +201,10 @@ update a metric
 ### update_or_create/3 ###
 
 <pre><code>
-update_or_create(Name::list(), Probe::<a href="#type-probe">probe()</a>, Type::<a href="#type-metric">metric()</a>) -&gt; ok | any()
+update_or_create(Name, Probe, Metric) -&gt; Result
 </code></pre>
-<br />
+
+<ul class="definitions"><li><code>Name = <a href="#type-metric_name">metric_name()</a></code></li><li><code>Probe = <a href="#type-probe">probe()</a></code></li><li><code>Metric = <a href="#type-metric">metric()</a></code></li><li><code>Result = ok | any()</code></li></ul>
 
 update a metric and create it if it doesn't exists
 

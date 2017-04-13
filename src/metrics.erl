@@ -39,8 +39,8 @@
 %%% Types
 %%%===================================================================
 
--type state() :: #state{}.
--type metric() :: counter | histogram | gauge | meter | spiral.
+-type metric_name() :: list().
+-type metric() :: counter | histogram | gauge | meter | spiral | duration.
 -type value() :: any().
 -type probe() :: {c, integer()} | timer_start | timer_end | value().
 
@@ -49,27 +49,41 @@
 %%%===================================================================
 
 %% @doc  initialise a metric
--spec new(metric(), list()) -> ok.
+-spec new(Metric, Name) -> Result when
+    Metric :: metric(),
+    Name :: metric_name(),
+    Result :: ok.
 new(Type, Name) ->
   metrics_mod:new(Type, Name).
 
 %% @doc increment a counter with 1
--spec update(list()) -> ok | any().
+-spec update(Name) -> Result when
+    Name :: metric_name(),
+    Result :: ok | any().
 update(Name) ->
   update(Name, {c, 1}).
 
 %% @doc update a metric
--spec update(list(), probe()) -> ok | any().
+-spec update(Name, Probe) -> Result when
+    Name :: metric_name(),
+    Probe :: probe(),
+    Result :: ok | any().
 update(Name, Probe) ->
   metrics_mod:update(Name, Probe).
 
 %% @doc update a metric and create it if it doesn't exists
--spec update_or_create(list(), probe(), metric()) -> ok | any().
+-spec update_or_create(Name, Probe, Metric) -> Result when
+    Name :: metric_name(),
+    Probe :: probe(),
+    Metric :: metric(),
+    Result :: ok | any().
 update_or_create(Name, Probe, Type) ->
   metrics_mod:update_or_create(Name, Probe, Type).
 
 %% @doc delete a metric
--spec delete(list()) -> ok | any().
+-spec delete(Name) -> Result when
+    Name :: metric_name(),
+    Result :: ok | any().
 delete(Name) ->
   metrics_mod:delete(Name).
 
@@ -111,7 +125,7 @@ stop(_State) ->
 %%% gen_server callbacks
 %%%===================================================================
 %%%
--spec init(term()) -> {ok, state()}.
+
 init([]) ->
   Mod = metrics_mod(),
   Config = init_mod(Mod),
@@ -119,7 +133,7 @@ init([]) ->
 
   {ok, #state{mod=Mod}}.
 
--spec handle_call(term(), term(), state()) -> {reply, term(), state()}.
+
 
 handle_call(get_backend, _From, State) ->
   {reply, State#state.mod, State};
@@ -132,21 +146,16 @@ handle_call({set_backend, Mod}, _From, State) ->
   end,
   {reply, ok, State}.
 
--spec handle_cast(term(), state()) -> {noreply, state()}.
-handle_cast(_Msg, State) ->
-  {noreply, State}.
 
--spec handle_info(term(), state()) -> {noreply, state()}.
-handle_info(_Info, State) ->
-  {noreply, State}.
+handle_cast(_Msg, State) -> {noreply, State}.
 
--spec terminate(term(), state()) -> ok.
-terminate(_Reason, _State) ->
-  ok.
 
--spec code_change(term(), state(), term()) -> {ok, state()}.
-code_change(_OldVsn, State, _Extra) ->
-  {ok, State}.
+handle_info(_Info, State) -> {noreply, State}.
+
+
+terminate(_Reason, _State) -> ok.
+
+code_change(_OldVsn, State, _Extra) -> {ok, State}.
 
 %%%===================================================================
 %%% Internal functions

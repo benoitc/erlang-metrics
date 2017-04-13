@@ -24,6 +24,8 @@ new(meter, Name, _Config) ->
   ensure(Name, meter);
 new(spiral, Name, _Config) ->
   ensure(Name, spiral);
+new(duration, Name, _Config) ->
+  ensure(Name, duration);
 new(_, _, _) ->
   {error, unsupported_type}.
 

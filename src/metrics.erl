@@ -42,7 +42,7 @@
 -type state() :: #state{}.
 -type metric() :: counter | histogram | gauge | meter | spiral.
 -type value() :: any().
--type probe() :: {c, integer()} | value().
+-type probe() :: {c, integer()} | timer_start | timer_end | value().
 
 %%%===================================================================
 %%% API

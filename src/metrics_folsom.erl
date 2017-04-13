@@ -29,6 +29,9 @@ new(meter, Name, _Config) ->
 new(spiral, Name, _Config) ->
   M = module(),
   M:new_spiral(Name);
+new(duration, Name, _Config) ->
+  M = module(),
+  M:new_duration(Name);
 new(_, _, _) ->
   {error, unsupported_type}.
 

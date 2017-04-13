@@ -15,24 +15,33 @@
 
 -spec new(atom(), any(), map()) -> ok | {error, term()}.
 new(counter, Name, _Config) ->
-  folsom_metrics:new_counter(Name);
+  M = module(),
+  M:new_counter(Name);
 new(histogram, Name, _Config) ->
-  folsom_metrics:new_histogram(Name);
+  M = module(),
+  M:new_histogram(Name);
 new(gauge, Name, _Config) ->
-  folsom_metrics:new_gauge(Name);
+  M = module(),
+  M:new_gauge(Name);
 new(meter, Name, _Config) ->
-  folsom_metrics:new_meter(Name);
+  M = module(),
+  M:new_meter(Name);
 new(spiral, Name, _Config) ->
-  folsom_metrics:new_spiral(Name);
+  M = module(),
+  M:new_spiral(Name);
 new(_, _, _) ->
   {error, unsupported_type}.
 
 update(Name, {c, I}, _Config) when I >= 0 ->
-  folsom_metrics:notify(Name, {inc, I});
+  notify(Name, {inc, I});
 update(Name, {c, I}, _Config) when I < 0 ->
-  folsom_metrics:notify(Name, {dec, abs(I)});
+  notify(Name, {dec, abs(I)});
 update(Name, Val, _Config) ->
-  folsom_metrics:notify(Name, Val).
+  notify(Name, Val).
+
+notify(Name, Val) ->
+  M = module(),
+  M:notify(Name, Val).
 
 update_or_create(Name, Probe, Type, Config) ->
   case update(Name, Probe, Config) of
@@ -45,4 +54,7 @@ update_or_create(Name, Probe, Type, Config) ->
   end.
 
 delete(Name, _Config) ->
-  folsom_metrics:delete_metric(Name).
+  M = module(),
+  M:delete_metric(Name).
+
+module() -> folsom_metrics.

@@ -13,28 +13,46 @@
 %% API
 -export([new/3, update/3, update_or_create/4, delete/2]).
 
-
 -spec new(atom(), any(), map()) -> ok | {error, metric_exists | unsupported_type}.
 new(counter, Name, _Config) ->
-  exometer:ensure(Name, counter, []);
+  ensure(Name, counter);
 new(histogram, Name, _Config) ->
-  exometer:ensure(Name, histogram, []);
+  ensure(Name, histogram);
 new(gauge, Name, _Config) ->
-  exometer:ensure(Name, gauge, []);
+  ensure(Name, gauge);
 new(meter, Name, _Config) ->
-  exometer:ensure(Name, meter, []);
+  ensure(Name, meter);
 new(spiral, Name, _Config) ->
-  exometer:ensure(Name, spiral, []);
+  ensure(Name, spiral);
 new(_, _, _) ->
   {error, unsupported_type}.
 
-update(Name, {c, I}, _Config) when is_integer(I) -> exometer:update(Name, I);
-update(Name, Val, _Config) -> exometer:update(Name, Val).
+
+ensure(Name, Type) ->
+  M = module(),
+  M:ensure(Name, Type).
+
+
+update(Name, {c, I}, _Config) when is_integer(I) -> update(Name, I);
+update(Name, Val, _Config) ->  update(Name, Val).
+
+update(Name, Val) ->
+  M = module(),
+  M:update(Name, Val).
 
 update_or_create(Name, {c, I}, Type, _Config) when is_integer(I) ->
-  exometer:update_or_create(Name, I, Type, []);
+  update_or_create(Name, I, Type);
 update_or_create(Name, Val, Type, _Config) ->
-  exometer:update_or_create(Name, Val, Type, []).
+  update_or_create(Name, Val, Type).
+
+
+update_or_create(Name, Val, Type) ->
+  M = module(),
+  M:update_or_create(Name, Val, Type, []).
+
 
 delete(Name, _Config) ->
-  exometer:delete(Name).
+  M = module(),
+  M:delete(Name).
+
+module() -> exometer.

@@ -1,5 +1,5 @@
-@copyright 2016 Benoît Chesneau.
-@version 2.2.0
+@copyright 2017 Benoît Chesneau.
+@version 2.3.0
 @title: metrics: A generic interface to different metrics systems in Erlang.
 
 @doc
@@ -14,7 +14,6 @@ Currently supported backend are:
 
 - [Folsom](https://github.com/folsom-project/folsom): `metrics_folsom'
 - [Exometer](https://github.com/Feuerlabs/exometer): `metrics_exometer'
-- [Grapherl](https://github.com/processone/grapherl): `metrics_grapherl'
 
 > If you need the support for another backend, please [open a ticket](https://github.com/benoitc/erlang-metrics/issues).
 

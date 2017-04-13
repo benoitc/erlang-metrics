@@ -2,9 +2,9 @@
 
 # metrics: A generic interface to different metrics systems in Erlang. #
 
-Copyright (c) 2016 Benoît Chesneau.
+Copyright (c) 2017 Benoît Chesneau.
 
-__Version:__ 2.2.0
+__Version:__ 2.3.0
 
 # metrics
 
@@ -16,7 +16,6 @@ Currently supported backend are:
 
 - [Folsom](https://github.com/folsom-project/folsom): `metrics_folsom`
 - [Exometer](https://github.com/Feuerlabs/exometer): `metrics_exometer`
-- [Grapherl](https://github.com/processone/grapherl): `metrics_grapherl`
 
 > If you need the support for another backend, please [open a ticket](https://github.com/benoitc/erlang-metrics/issues).
 
@@ -88,7 +87,6 @@ $ rebar3 compile
 <tr><td><a href="http://github.com/benoitc/erlang-metrics/blob/master/doc/metrics.md" class="module">metrics</a></td></tr>
 <tr><td><a href="http://github.com/benoitc/erlang-metrics/blob/master/doc/metrics_exometer.md" class="module">metrics_exometer</a></td></tr>
 <tr><td><a href="http://github.com/benoitc/erlang-metrics/blob/master/doc/metrics_folsom.md" class="module">metrics_folsom</a></td></tr>
-<tr><td><a href="http://github.com/benoitc/erlang-metrics/blob/master/doc/metrics_grapherl.md" class="module">metrics_grapherl</a></td></tr>
 <tr><td><a href="http://github.com/benoitc/erlang-metrics/blob/master/doc/metrics_noop.md" class="module">metrics_noop</a></td></tr>
 <tr><td><a href="http://github.com/benoitc/erlang-metrics/blob/master/doc/metrics_process_tracker.md" class="module">metrics_process_tracker</a></td></tr>
 <tr><td><a href="http://github.com/benoitc/erlang-metrics/blob/master/doc/metrics_sup.md" class="module">metrics_sup</a></td></tr></table>

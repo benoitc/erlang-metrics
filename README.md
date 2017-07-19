@@ -9,7 +9,7 @@ __Version:__ 2.4.0
 # metrics
 
 A generic interface to folsom, exometer, grapherl or any compliant interface. This
-application have been extracted from
+application has been extracted from
 [hackney](https://github.com/benoitc/hackney).
 
 Currently supported backend are:

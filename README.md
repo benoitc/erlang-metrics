@@ -9,7 +9,7 @@ __Version:__ 2.4.0
 # metrics
 
 A generic interface to folsom, exometer, grapherl or any compliant interface. This
-application have been extracted from
+application has been extracted from
 [hackney](https://github.com/benoitc/hackney).
 
 Currently supported backend are:
@@ -25,7 +25,7 @@ Currently supported backend are:
 
 ### Set a backend
 
-The backend can be set in the application environmenet using the `metrics_mod` setting or using `metrics:backend/1`.
+The backend can be set in the application environment using the `metrics_mod` setting or using `metrics:backend/1`.
 
 ### register a new metric:
 

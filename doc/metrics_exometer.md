@@ -30,7 +30,7 @@ exometer backend.
 ### new/3 ###
 
 <pre><code>
-new(X1::atom(), Name::any(), Config::#{}) -&gt; ok | {error, metric_exists | unsupported_type}
+new(X1::atom(), Name::any(), Config::map()) -&gt; ok | {error, metric_exists | unsupported_type}
 </code></pre>
 <br />
 

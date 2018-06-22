@@ -30,7 +30,7 @@ folsom backend.
 ### new/3 ###
 
 <pre><code>
-new(X1::atom(), Name::any(), Config::#{}) -&gt; ok | {error, term()}
+new(X1::atom(), Name::any(), Config::map()) -&gt; ok | {error, term()}
 </code></pre>
 <br />
 

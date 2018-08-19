@@ -179,17 +179,18 @@ init_mod(Mod) ->
 
 build_metrics_mod(Mod, Config) when is_atom(Mod), is_map(Config) ->
   error_logger:info_msg("build metrics module: ~s~n", [Mod]),
-  New = erl_syntax:function(merl:term('new'),
-    [?Q("(Type, Name) -> _@Mod@:new(Type, Name, _@Config@)")]),
-  Update = erl_syntax:function(merl:term('update'),
-    [?Q("(Name, Probe) -> _@Mod@:update(Name, Probe, _@Config@)")]),
-  UpdateOrCreate = erl_syntax:function(merl:term('update_or_create'),
-    [?Q("(Name, Probe, Type) -> _@Mod@:update_or_create(Name, Probe, Type, _@Config@)")]),
-  Delete = erl_syntax:function(merl:term('delete'),
-    [?Q("(Name) -> _@Mod@:delete(Name, _@Config@)")]),
   Module = ?Q("-module('metrics_mod')."),
   Exported = ?Q("-export(['new'/2, 'update'/2, 'update_or_create'/3, 'delete'/1])."),
-  Functions = [ ?Q("'@_F'() -> [].") || F <- [New, Update, UpdateOrCreate, Delete]],
+  Functions = ?Q([
+    "new(Type, Name) -> _@Mod@:new(Type, Name, _@Config@).",
+
+    "update(Name, Probe) -> _@Mod@:update(Name, Probe, _@Config@).",
+
+    "update_or_create(Name, Probe, Type) ->",
+    "  _@Mod@:update_or_create(Name, Probe, Type, _@Config@).",
+
+    "delete(Name) -> _@Mod@:delete(Name, _@Config@)."
+  ]),
   Forms = lists:flatten([Module, Exported, Functions]),
   merl:compile_and_load(Forms, [verbose]),
   ok.

@@ -31,7 +31,7 @@ new(_, _, _) ->
 
 ensure(Name, Type) ->
   M = module(),
-  M:ensure(Name, Type).
+  M:ensure(Name, Type, []).
 
 
 update(Name, {c, I}, _Config) when is_integer(I) -> update(Name, I);
